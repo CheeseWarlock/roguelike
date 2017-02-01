@@ -1,1 +1,1 @@
-require("three");
+console.log("test");

@@ -12,7 +12,7 @@ var paths = {
 
 gulp.task('libs', function() {
 	var b = browserify({
-		entries: 'src/main.js'
+		entries: 'libs.js'
 	});
 
 	return b.bundle()
@@ -23,10 +23,6 @@ gulp.task('libs', function() {
 });
 
 gulp.task('default', function() {
-	var b = browserify({
-		entries: 'src/main.js'
-	});
-
 	return gulp.src(paths.scripts)
 		.pipe(concat('game.js'))
 		.pipe(babel())
