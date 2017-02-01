@@ -1,1 +1,1 @@
-require('three');
+window.THREE = require('three');
