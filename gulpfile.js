@@ -22,10 +22,17 @@ gulp.task('libs', function() {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', function() {
+gulp.task('static', function() {
+	return gulp.src('src/index.html')
+		.pipe(gulp.dest('dist'));
+});
+
+gulp.task('default', ['static'], function() {
 	return gulp.src(paths.scripts)
 		.pipe(concat('game.js'))
 		.pipe(babel())
 		.pipe(uglify())
 		.pipe(gulp.dest('dist'));
 });
+
+gulp.task('all', ['libs', 'default']);
