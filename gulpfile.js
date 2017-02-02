@@ -7,7 +7,8 @@ var concat = require('gulp-concat');
 var babel = require('gulp-babel');
 
 var paths = {
-	scripts: ['src/*.js']
+	scripts: ['src/*.js'],
+	statics: ['src/*.html', 'src/*.css']
 };
 
 gulp.task('libs', function() {
@@ -23,7 +24,7 @@ gulp.task('libs', function() {
 });
 
 gulp.task('static', function() {
-	return gulp.src('src/index.html')
+	return gulp.src(paths.statics)
 		.pipe(gulp.dest('dist'));
 });
 
