@@ -2,8 +2,7 @@ var scene, camera, renderer;
 var geometry, material, mesh;
 
 window.onload = function() {
-	init();
-	animate();
+	
 }
 
 function init() {
@@ -55,7 +54,7 @@ function init() {
 	wallMesh.position.y = -300;
 
 	var floor = new THREE.PlaneGeometry(800, 600);
-	var floorMaterial = new THREE.MeshBasicMaterial({ color: 0x604830 });
+	var floorMaterial = loadedMaterials['tile'];
 	var floorMesh = new THREE.Mesh(floor, floorMaterial);
 	scene.add(floorMesh);
 
@@ -69,6 +68,7 @@ function init() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
 	document.body.appendChild( renderer.domElement );
+	animate();
 }
 
 function animate() {
