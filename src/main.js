@@ -31,21 +31,6 @@ function init() {
 	camera.position.y = -400;
 	camera.rotation.x = 0.5;
 
-	var outerShape = new THREE.Shape();
-	outerShape.lineTo(800, 0);
-	outerShape.lineTo(800, 600);
-	outerShape.lineTo(0, 600);
-	outerShape.lineTo(0, 0);
-
-	var innerThing = new THREE.Path();
-	innerThing.moveTo(100, 100);
-	innerThing.lineTo(700, 100);
-	innerThing.lineTo(700, 500);
-	innerThing.lineTo(100, 500);
-	innerThing.lineTo(100, 100);
-
-	outerShape.holes = [innerThing];
-
 	for (var i=0;i<Dungeon.rooms()[0][2];i++) {
 		for (var j=0;j<Dungeon.rooms()[0][3];j++) {
 			if (Dungeon.atLocation(i,j) === TILE_WALL) {
