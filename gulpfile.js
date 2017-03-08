@@ -8,7 +8,7 @@ var babel = require('gulp-babel');
 
 var paths = {
 	scripts: ['src/*.js'],
-	statics: ['src/*.html', 'src/*.css']
+	statics: ['src/*.html', 'src/*.css', 'src/img/*.png']
 };
 
 gulp.task('libs', function() {
