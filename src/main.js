@@ -20,7 +20,7 @@ function init() {
 	directionalLight.position.z = 0;
 	scene.add( directionalLight );
 
-	directionalLight = new THREE.DirectionalLight( 0x0000ff, 0.5 );
+	directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 	directionalLight.position.x = 0;
 	directionalLight.position.y = 0;
 	directionalLight.position.z = 1000;
@@ -46,12 +46,13 @@ function init() {
 
 	outerShape.holes = [innerThing];
 
-	var wall = new THREE.ExtrudeGeometry(outerShape, { amount: 100 });
-	var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x907058 });
-	var wallMesh = new THREE.Mesh(wall, wallMaterial);
-	scene.add(wallMesh);
-	wallMesh.position.x = -400;
-	wallMesh.position.y = -300;
+	for (var i=0;i<Dungeon.rooms()[0][2];i++) {
+		for (var j=0;j<Dungeon.rooms()[0][3];j++) {
+			if (Dungeon.atLocation(i,j) === TILE_WALL) {
+				addWallBlock(i, j);
+			}
+		}
+	}
 
 	var floor = new THREE.PlaneGeometry(800, 600);
 	var floorMaterial = loadedMaterials['tile'];
@@ -69,6 +70,16 @@ function init() {
 
 	document.body.appendChild( renderer.domElement );
 	animate();
+}
+
+function addWallBlock(x, z) {
+	var wall = new THREE.BoxGeometry(100, 100, 100);
+	var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x907058 });
+	var wallMesh = new THREE.Mesh(wall, wallMaterial);
+	scene.add(wallMesh);
+	wallMesh.position.x = x * 100 - 350;
+	wallMesh.position.y = z * 100 - 250;
+	wallMesh.position.z = 50;
 }
 
 function animate() {
