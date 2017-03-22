@@ -15,6 +15,12 @@ var Dungeon = {
 	},
 
 	entities: function() {
-		return [];
+		return [
+			{
+				x: 2,
+				z: 2,
+				id: 0
+			}
+		];
 	}
 };

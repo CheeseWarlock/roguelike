@@ -33,6 +33,11 @@ var Renderer = {
 			}
 		}
 
+		var entities = Dungeon.entities();
+		for (var i in entities) {
+			this.addActor(entities[i].x, entities[i].z, 0);
+		}
+
 		var floor = new THREE.PlaneGeometry(800, 600);
 		var floorMaterial = loadedMaterials['tile'];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
@@ -54,6 +59,17 @@ var Renderer = {
 	addWallBlock: function(x, z) {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
 		var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x907058 });
+		var wallMesh = new THREE.Mesh(wall, wallMaterial);
+		scene.add(wallMesh);
+		wallMesh.position.x = x * 100 - 350;
+		wallMesh.position.y = z * 100 - 250;
+		wallMesh.position.z = 50;
+	},
+
+	addActor: function(x, z, id) {
+		console.log("adding");
+		var wall = new THREE.BoxGeometry(50, 50, 50);
+		var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x000000 });
 		var wallMesh = new THREE.Mesh(wall, wallMaterial);
 		scene.add(wallMesh);
 		wallMesh.position.x = x * 100 - 350;
