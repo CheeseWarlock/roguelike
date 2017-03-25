@@ -68,8 +68,8 @@ var Renderer = {
 
 	addActor: function(x, z, id) {
 		console.log("adding");
-		var wall = new THREE.BoxGeometry(50, 50, 50);
-		var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x000000 });
+		var wall = new THREE.PlaneGeometry(50, 100);
+		var wallMaterial = loadedMaterials["char"];
 		var wallMesh = new THREE.Mesh(wall, wallMaterial);
 		scene.add(wallMesh);
 		wallMesh.position.x = x * 100 - 350;

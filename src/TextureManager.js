@@ -5,6 +5,13 @@ textures = [
 		repeats: [8, 6],
 		transparent: false,
 		side: THREE.DoubleSide
+	},
+	{
+		file: "char.png",
+		name: "char",
+		repeats: [1, 1],
+		transparent: true,
+		side: THREE.DoubleSide
 	}
 ];
 
@@ -33,6 +40,5 @@ textures.forEach(function(texture) {
 });
 
 function loadingDone() {
-	console.log("whyyyyyy");
 	init();
 }
