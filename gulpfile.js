@@ -29,9 +29,14 @@ gulp.task('static', function() {
 });
 
 gulp.task('default', ['static'], function() {
-	return gulp.src(paths.scripts)
+	var b = browserify({
+		entries: 'src/main.js'
+	});
+
+	return b.bundle()
+		.pipe(source('app.js'))
+		.pipe(buffer())
 		.pipe(concat('game.js'))
-		.pipe(babel())
 		.pipe(gulp.dest('dist'));
 });
 
