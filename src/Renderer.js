@@ -27,12 +27,12 @@ var Renderer = {
 		}
 
 		var entities = Dungeon.entities();
-		for (var i in entities) {
+		for (i in entities) {
 			this.addActor(entities[i].x, entities[i].z, 0);
 		}
 
 		var floor = new THREE.PlaneGeometry(800, 600);
-		var floorMaterial = loadedMaterials['tile'];
+		var floorMaterial = loadedMaterials["tile"];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
 		floorMesh.rotation.x = Math.PI / 2;
 		this.scene.add(floorMesh);
@@ -52,7 +52,7 @@ var Renderer = {
 		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 	},
 
-	addActor: function(x, z, id) {
+	addActor: function(x, z) {
 		var actor = new THREE.PlaneGeometry(50, 100);
 		var actorMaterial = loadedMaterials["char"];
 		var actorMesh = new THREE.Mesh(actor, actorMaterial);
