@@ -2,28 +2,21 @@ var Renderer = {
 	init: function() {
 		scene = new THREE.Scene();
 
-		var directionalLight = new THREE.DirectionalLight( 0xff0000, 0.5 );
-		directionalLight.position.x = 0;
-		directionalLight.position.y = -1000;
-		directionalLight.position.z = 0;
+		var directionalLight = new THREE.DirectionalLight( 0xff0000, 0.6 );
+		directionalLight.position.set(500, 1000, 0);
 		scene.add(directionalLight);
 
-		directionalLight = new THREE.DirectionalLight( 0x00ff00, 0.5 );
-		directionalLight.position.x = 1000;
-		directionalLight.position.y = 0;
-		directionalLight.position.z = 0;
+		directionalLight = new THREE.DirectionalLight( 0x00ff00, 0.6 );
+		directionalLight.position.set(0, 1000, 500);
 		scene.add(directionalLight);
 
-		directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-		directionalLight.position.x = 0;
-		directionalLight.position.y = 0;
-		directionalLight.position.z = 1000;
+		directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
+		directionalLight.position.set(0, 1000, 0);
 		scene.add(directionalLight);
 
 		camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-		camera.position.z = 1000;
-		camera.position.y = -400;
-		camera.rotation.x = 0.5;
+		camera.position.set(0, 800, 400);
+		camera.lookAt(new THREE.Vector3(0,0,0));
 
 		for (var i=0;i<Dungeon.rooms()[0][2];i++) {
 			for (var j=0;j<Dungeon.rooms()[0][3];j++) {
@@ -41,13 +34,8 @@ var Renderer = {
 		var floor = new THREE.PlaneGeometry(800, 600);
 		var floorMaterial = loadedMaterials['tile'];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
+		floorMesh.rotation.x = Math.PI / 2;
 		scene.add(floorMesh);
-
-		geometry = new THREE.BoxGeometry( 100, 100, 100 );
-		material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-
-		mesh = new THREE.Mesh( geometry, material );
-		scene.add( mesh );
 
 		renderer = new THREE.WebGLRenderer();
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -61,20 +49,15 @@ var Renderer = {
 		var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x907058 });
 		var wallMesh = new THREE.Mesh(wall, wallMaterial);
 		scene.add(wallMesh);
-		wallMesh.position.x = x * 100 - 350;
-		wallMesh.position.y = z * 100 - 250;
-		wallMesh.position.z = 50;
+		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 	},
 
 	addActor: function(x, z, id) {
-		console.log("adding");
-		var wall = new THREE.PlaneGeometry(50, 100);
-		var wallMaterial = loadedMaterials["char"];
-		var wallMesh = new THREE.Mesh(wall, wallMaterial);
-		scene.add(wallMesh);
-		wallMesh.position.x = x * 100 - 350;
-		wallMesh.position.y = z * 100 - 250;
-		wallMesh.position.z = 50;
+		var actor = new THREE.PlaneGeometry(50, 100);
+		var actorMaterial = loadedMaterials["char"];
+		var actorMesh = new THREE.Mesh(actor, actorMaterial);
+		scene.add(actorMesh);
+		actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 	},
 
 	build: function() {
