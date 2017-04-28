@@ -14,6 +14,6 @@ window.initt = function() {
 };
 
 window.animate = function() {
-	requestAnimationFrame( animate );
+	requestAnimationFrame(animate);
 	Renderer.render();
 };

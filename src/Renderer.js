@@ -2,25 +2,25 @@ var Renderer = {
 	init: function() {
 		this.scene = new THREE.Scene();
 
-		var directionalLight = new THREE.DirectionalLight( 0xff0000, 0.6 );
+		var directionalLight = new THREE.DirectionalLight(0xff0000, 0.6);
 		directionalLight.position.set(500, 1000, 0);
 		this.scene.add(directionalLight);
 
-		directionalLight = new THREE.DirectionalLight( 0x00ff00, 0.6 );
+		directionalLight = new THREE.DirectionalLight(0x00ff00, 0.6);
 		directionalLight.position.set(0, 1000, 500);
 		this.scene.add(directionalLight);
 
-		directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
+		directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
 		directionalLight.position.set(0, 1000, 0);
 		this.scene.add(directionalLight);
 
-		this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
 		this.camera.position.set(0, 800, 400);
-		this.camera.lookAt(new THREE.Vector3(0,0,0));
+		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 		for (var i=0;i<Dungeon.rooms()[0][2];i++) {
 			for (var j=0;j<Dungeon.rooms()[0][3];j++) {
-				if (Dungeon.atLocation(i,j) === TILE_WALL) {
+				if (Dungeon.atLocation(i, j) === TILE_WALL) {
 					this.addWallBlock(i, j);
 				}
 			}
@@ -38,9 +38,9 @@ var Renderer = {
 		this.scene.add(floorMesh);
 
 		this.renderer = new THREE.WebGLRenderer();
-		this.renderer.setSize( window.innerWidth, window.innerHeight );
+		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-		document.body.appendChild( this.renderer.domElement );
+		document.body.appendChild(this.renderer.domElement);
 		animate();
 	},
 

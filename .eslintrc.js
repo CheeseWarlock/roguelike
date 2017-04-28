@@ -5,7 +5,15 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "rules": {
-    		"no-undef": 0,
+        "space-in-parens": [
+          "error",
+          "never"
+        ],
+        "comma-spacing": [
+        	"error",
+        	{ "before": false, "after": true }
+        ],
+        "no-undef": 0,
         "indent": [
             "error",
             "tab"
