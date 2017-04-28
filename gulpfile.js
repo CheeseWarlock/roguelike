@@ -32,7 +32,6 @@ gulp.task('default', ['static'], function() {
 	return gulp.src(paths.scripts)
 		.pipe(concat('game.js'))
 		.pipe(babel())
-		.pipe(uglify())
 		.pipe(gulp.dest('dist'));
 });
 

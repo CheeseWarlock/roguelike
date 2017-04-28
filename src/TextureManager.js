@@ -40,5 +40,5 @@ textures.forEach(function(texture) {
 });
 
 function loadingDone() {
-	init();
+	window.initt();
 }

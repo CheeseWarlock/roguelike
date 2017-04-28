@@ -1,22 +1,22 @@
 var Renderer = {
 	init: function() {
-		scene = new THREE.Scene();
+		this.scene = new THREE.Scene();
 
 		var directionalLight = new THREE.DirectionalLight( 0xff0000, 0.6 );
 		directionalLight.position.set(500, 1000, 0);
-		scene.add(directionalLight);
+		this.scene.add(directionalLight);
 
 		directionalLight = new THREE.DirectionalLight( 0x00ff00, 0.6 );
 		directionalLight.position.set(0, 1000, 500);
-		scene.add(directionalLight);
+		this.scene.add(directionalLight);
 
 		directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
 		directionalLight.position.set(0, 1000, 0);
-		scene.add(directionalLight);
+		this.scene.add(directionalLight);
 
-		camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-		camera.position.set(0, 800, 400);
-		camera.lookAt(new THREE.Vector3(0,0,0));
+		this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+		this.camera.position.set(0, 800, 400);
+		this.camera.lookAt(new THREE.Vector3(0,0,0));
 
 		for (var i=0;i<Dungeon.rooms()[0][2];i++) {
 			for (var j=0;j<Dungeon.rooms()[0][3];j++) {
@@ -35,12 +35,12 @@ var Renderer = {
 		var floorMaterial = loadedMaterials['tile'];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
 		floorMesh.rotation.x = Math.PI / 2;
-		scene.add(floorMesh);
+		this.scene.add(floorMesh);
 
-		renderer = new THREE.WebGLRenderer();
-		renderer.setSize( window.innerWidth, window.innerHeight );
+		this.renderer = new THREE.WebGLRenderer();
+		this.renderer.setSize( window.innerWidth, window.innerHeight );
 
-		document.body.appendChild( renderer.domElement );
+		document.body.appendChild( this.renderer.domElement );
 		animate();
 	},
 
@@ -48,7 +48,7 @@ var Renderer = {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
 		var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x907058 });
 		var wallMesh = new THREE.Mesh(wall, wallMaterial);
-		scene.add(wallMesh);
+		this.scene.add(wallMesh);
 		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 	},
 
@@ -56,11 +56,17 @@ var Renderer = {
 		var actor = new THREE.PlaneGeometry(50, 100);
 		var actorMaterial = loadedMaterials["char"];
 		var actorMesh = new THREE.Mesh(actor, actorMaterial);
-		scene.add(actorMesh);
+		this.scene.add(actorMesh);
 		actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 	},
 
 	build: function() {
 
+	},
+
+	render: function() {
+		this.renderer.render(this.scene, this.camera);
 	}
 };
+
+module.exports = Renderer;

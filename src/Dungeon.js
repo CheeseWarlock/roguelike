@@ -1,6 +1,3 @@
-var TILE_WALL = 0;
-var TILE_FLOOR = 1;
-
 var Dungeon = {
 	rooms: function() {
 		return [[0, 0, 8, 6]];
@@ -24,3 +21,5 @@ var Dungeon = {
 		];
 	}
 };
+
+module.exports = Dungeon;
