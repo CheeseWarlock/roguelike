@@ -35,8 +35,8 @@ class Renderer {
 		this.camera.position.set(0, 800, 400);
 		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-		for (var i=0;i<Dungeon.rooms()[0][2];i++) {
-			for (var j=0;j<Dungeon.rooms()[0][3];j++) {
+		for (var i=0;i<10;i++) {
+			for (var j=0;j<10;j++) {
 				if (Dungeon.atLocation(i, j) === Dungeon.TILE_WALL) {
 					this.addWallBlock(i, j);
 				}
