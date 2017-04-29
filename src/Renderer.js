@@ -1,21 +1,21 @@
 var Dungeon = require("./Dungeon");
 var TextureManager = require("./TextureManager");
 
-var Renderer = {
-	setup: function() {
-		TextureManager.startLoad(this.callback);
-	},
+class Renderer {
+	setup() {
+		TextureManager.startLoad(() => {this.init(); });
+	}
 
-	callback: function() {
-		Renderer.init();
-	},
+	callback() {
+		this.init();
+	}
 
-	nextFrame: function() {
+	nextFrame() {
 		requestAnimationFrame(this.nextFrame);
 		this.render();
-	},
+	}
 
-	init: function() {
+	init() {
 		this.scene = new THREE.Scene();
 
 		var directionalLight = new THREE.DirectionalLight(0xff0000, 0.6);
@@ -58,31 +58,27 @@ var Renderer = {
 
 		document.body.appendChild(this.renderer.domElement);
 		this.nextFrame();
-	},
+	}
 
-	addWallBlock: function(x, z) {
+	addWallBlock(x, z) {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
 		var wallMaterial = new THREE.MeshLambertMaterial({ color: 0x907058 });
 		var wallMesh = new THREE.Mesh(wall, wallMaterial);
 		this.scene.add(wallMesh);
 		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
-	},
+	}
 
-	addActor: function(x, z) {
+	addActor(x, z) {
 		var actor = new THREE.PlaneGeometry(50, 100);
 		var actorMaterial = TextureManager.loadedMaterials["char"];
 		var actorMesh = new THREE.Mesh(actor, actorMaterial);
 		this.scene.add(actorMesh);
 		actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
-	},
+	}
 
-	build: function() {
-
-	},
-
-	render: function() {
+	render() {
 		this.renderer.render(this.scene, this.camera);
 	}
-};
+}
 
-module.exports = Renderer;
+module.exports = new Renderer();
