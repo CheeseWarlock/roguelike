@@ -86,7 +86,10 @@ class Renderer {
 		this.actorMesh = new THREE.Mesh(actor, actorMaterial);
 		this.scene.add(this.actorMesh);
 		this.actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
-		Controller.registerCallback(37, () => { this.actorMesh.position.x -= 50; });
+		Controller.registerCallback(37, () => { this.actorMesh.position.x -= 100; });
+		Controller.registerCallback(38, () => { this.actorMesh.position.z -= 100; });
+		Controller.registerCallback(39, () => { this.actorMesh.position.x += 100; });
+		Controller.registerCallback(40, () => { this.actorMesh.position.z += 100; });
 	}
 
 	render() {
