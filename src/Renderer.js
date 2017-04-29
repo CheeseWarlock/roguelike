@@ -1,9 +1,10 @@
 var Dungeon = require("./Dungeon");
 var TextureManager = require("./TextureManager");
+var Controller = require("./Controller");
 
 class Renderer {
 	setup() {
-		TextureManager.startLoad(() => {this.init(); });
+		TextureManager.startLoad(() => { this.init(); });
 	}
 
 	callback() {
@@ -11,7 +12,7 @@ class Renderer {
 	}
 
 	nextFrame() {
-		requestAnimationFrame(this.nextFrame);
+		requestAnimationFrame(() => { this.nextFrame() });
 		this.render();
 	}
 
@@ -71,9 +72,10 @@ class Renderer {
 	addActor(x, z) {
 		var actor = new THREE.PlaneGeometry(50, 100);
 		var actorMaterial = TextureManager.loadedMaterials["char"];
-		var actorMesh = new THREE.Mesh(actor, actorMaterial);
-		this.scene.add(actorMesh);
-		actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
+		this.actorMesh = new THREE.Mesh(actor, actorMaterial);
+		this.scene.add(this.actorMesh);
+		this.actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
+		Controller.registerCallback(37, () => { this.actorMesh.position.x -= 50; });
 	}
 
 	render() {

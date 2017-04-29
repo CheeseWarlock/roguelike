@@ -5,17 +5,18 @@ const KEY_DOWN = 40;
 
 class Controller {
 	constructor() {
-		document.addEventListener("keydown", this.respond);
+		document.addEventListener("keydown", (ev) => { this.respond(ev) });
 		this.callbacks = {};
 	}
 
 	registerCallback(keycode, func) {
-		var list = this.callbacks[keycode];
-		if (!list) list = [];
-		list.push(func);
+		if (!this.callbacks[keycode]) this.callbacks[keycode] = [];
+		this.callbacks[keycode].push(func);
 	}
 
-	respond(keycode) {
-		this.callbacks[keycode].map((func) => { func(); });
+	respond(ev) {
+		this.callbacks[ev.keyCode].map((func) => { func(); });
 	}
 }
+
+module.exports = new Controller();
