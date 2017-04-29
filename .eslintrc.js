@@ -1,10 +1,17 @@
 module.exports = {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "commonjs": true
+    },
+    "globals": {
+      "THREE": false
     },
     "extends": "eslint:recommended",
     "rules": {
+        "indent": [
+    			"error", "tab"
+    		],
         "space-in-parens": [
           "error",
           "never"
@@ -13,7 +20,6 @@ module.exports = {
         	"error",
         	{ "before": false, "after": true }
         ],
-        "no-undef": 0,
         "indent": [
             "error",
             "tab"

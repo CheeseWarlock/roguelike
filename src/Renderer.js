@@ -1,4 +1,20 @@
+var Dungeon = require("./Dungeon");
+var TextureManager = require("./TextureManager");
+
 var Renderer = {
+	setup: function() {
+		TextureManager.startLoad(this.callback);
+	},
+
+	callback: function() {
+		Renderer.init();
+	},
+
+	nextFrame: function() {
+		requestAnimationFrame(this.nextFrame);
+		this.render();
+	},
+
 	init: function() {
 		this.scene = new THREE.Scene();
 
@@ -20,7 +36,7 @@ var Renderer = {
 
 		for (var i=0;i<Dungeon.rooms()[0][2];i++) {
 			for (var j=0;j<Dungeon.rooms()[0][3];j++) {
-				if (Dungeon.atLocation(i, j) === TILE_WALL) {
+				if (Dungeon.atLocation(i, j) === Dungeon.TILE_WALL) {
 					this.addWallBlock(i, j);
 				}
 			}
@@ -32,7 +48,7 @@ var Renderer = {
 		}
 
 		var floor = new THREE.PlaneGeometry(800, 600);
-		var floorMaterial = loadedMaterials["tile"];
+		var floorMaterial = TextureManager.loadedMaterials["tile"];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
 		floorMesh.rotation.x = Math.PI / 2;
 		this.scene.add(floorMesh);
@@ -41,7 +57,7 @@ var Renderer = {
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
 		document.body.appendChild(this.renderer.domElement);
-		animate();
+		this.nextFrame();
 	},
 
 	addWallBlock: function(x, z) {
@@ -54,7 +70,7 @@ var Renderer = {
 
 	addActor: function(x, z) {
 		var actor = new THREE.PlaneGeometry(50, 100);
-		var actorMaterial = loadedMaterials["char"];
+		var actorMaterial = TextureManager.loadedMaterials["char"];
 		var actorMesh = new THREE.Mesh(actor, actorMaterial);
 		this.scene.add(actorMesh);
 		actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
