@@ -1,23 +1,24 @@
 var DungeonLayout = require("./DungeonLayout");
 
-var Dungeon = {
-	TILE_WALL: 0,
-	TILE_FLOOR: 1,
-	rooms: function() {
-		return DungeonLayout.rooms;
-	},
+const TILE_WALL = 0;
+const TILE_FLOOR = 1;
 
-	atLocation: function(x, y) {
+class Dungeon {
+	rooms() {
+		return DungeonLayout.rooms;
+	}
+
+	atLocation(x, y) {
 		if (this.isWall(x, y)) {
-			return this.TILE_WALL;
+			return TILE_WALL;
 		} else if (this.isFloor(x, y)) {
-			return this.TILE_FLOOR;
+			return TILE_FLOOR;
 		} else {
 			return null;
 		}
-	},
+	}
 
-	isFloor: function(x, y) {
+	isFloor(x, y) {
 		var floor = false;
 		DungeonLayout.rooms.map((room) => {
 			if (x > room[0] && x < room[2] && y > room[1] && y < room[3]) {
@@ -25,9 +26,9 @@ var Dungeon = {
 			}
 		});
 		return floor;
-	},
+	}
 
-	isWall: function(x, y) {
+	isWall(x, y) {
 		var wall = false;
 		DungeonLayout.rooms.map((room) => {
 			if (((x == room[0] || x == room[2]) && y >= room[1] && y <= room[3]) ||
@@ -36,9 +37,9 @@ var Dungeon = {
 			}
 		});
 		return wall;
-	},
+	}
 
-	entities: function() {
+	entities() {
 		return [
 			{
 				x: 2,
@@ -47,6 +48,10 @@ var Dungeon = {
 			}
 		];
 	}
-};
+}
 
-module.exports = Dungeon;
+module.exports = {
+	TILE_WALL: TILE_WALL,
+	TILE_FLOOR: TILE_FLOOR,
+	Dungeon: Dungeon
+};

@@ -17,6 +17,7 @@ class Renderer {
 	}
 
 	init() {
+		this.dungeon = new Dungeon.Dungeon();
 		this.scene = new THREE.Scene();
 
 		var directionalLight = new THREE.DirectionalLight(0xff0000, 0.6);
@@ -37,7 +38,7 @@ class Renderer {
 
 		for (var i=0;i<10;i++) {
 			for (var j=0;j<10;j++) {
-				var a = Dungeon.atLocation(i, j);
+				var a = this.dungeon.atLocation(i, j);
 				if (a === Dungeon.TILE_WALL) {
 					this.addWallBlock(i, j);
 				} else if (a === Dungeon.TILE_FLOOR) {
@@ -46,7 +47,7 @@ class Renderer {
 			}
 		}
 
-		var entities = Dungeon.entities();
+		var entities = this.dungeon.entities();
 		for (i in entities) {
 			this.addActor(entities[i].x, entities[i].z, 0);
 		}
