@@ -8,31 +8,31 @@ class Dungeon {
 		return DungeonLayout.rooms;
 	}
 
-	atLocation(x, y) {
-		if (this.isWall(x, y)) {
+	atLocation(x, z) {
+		if (this.isWall(x, z)) {
 			return TILE_WALL;
-		} else if (this.isFloor(x, y)) {
+		} else if (this.isFloor(x, z)) {
 			return TILE_FLOOR;
 		} else {
 			return null;
 		}
 	}
 
-	isFloor(x, y) {
+	isFloor(x, z) {
 		var floor = false;
 		DungeonLayout.rooms.map((room) => {
-			if (x > room[0] && x < room[2] && y > room[1] && y < room[3]) {
+			if (x > room[0] && x < room[2] && z > room[1] && z < room[3]) {
 				floor = true;
 			}
 		});
 		return floor;
 	}
 
-	isWall(x, y) {
+	isWall(x, z) {
 		var wall = false;
 		DungeonLayout.rooms.map((room) => {
-			if (((x == room[0] || x == room[2]) && y >= room[1] && y <= room[3]) ||
-					((y == room[1] || y == room[3]) && x >= room[0] && x <= room[2])) {
+			if (((x == room[0] || x == room[2]) && z >= room[1] && z <= room[3]) ||
+					((z == room[1] || z == room[3]) && x >= room[0] && x <= room[2])) {
 				wall = true;
 			}
 		});

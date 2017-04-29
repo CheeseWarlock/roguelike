@@ -3,12 +3,8 @@ var TextureManager = require("./TextureManager");
 var Controller = require("./Controller");
 
 class Renderer {
-	setup() {
-		TextureManager.startLoad(() => { this.init(); });
-	}
-
-	callback() {
-		this.init();
+	constructor() {
+		TextureManager.startLoad(() => { this.setupGame(); });
 	}
 
 	nextFrame() {
@@ -16,7 +12,7 @@ class Renderer {
 		this.render();
 	}
 
-	init() {
+	setupGame() {
 		this.dungeon = new Dungeon.Dungeon();
 		this.scene = new THREE.Scene();
 
