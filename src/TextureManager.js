@@ -4,7 +4,7 @@ class TextureManager {
 			{
 				file: "tile.png",
 				name: "tile",
-				repeats: [8, 6],
+				repeats: [1, 1],
 				transparent: false,
 				side: THREE.DoubleSide
 			},

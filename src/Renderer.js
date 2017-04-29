@@ -48,17 +48,28 @@ class Renderer {
 			this.addActor(entities[i].x, entities[i].z, 0);
 		}
 
-		var floor = new THREE.PlaneGeometry(800, 600);
-		var floorMaterial = TextureManager.loadedMaterials["tile"];
-		var floorMesh = new THREE.Mesh(floor, floorMaterial);
-		floorMesh.rotation.x = Math.PI / 2;
-		this.scene.add(floorMesh);
+		Dungeon.rooms().map((room) => {
+			for (i=room[0]+1;i<room[2];i++) {
+				for (j=room[1]+1;j<room[3];j++) {
+					this.addFloorSection(i, j);
+				}
+			}
+		});
 
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
 		document.body.appendChild(this.renderer.domElement);
 		this.nextFrame();
+	}
+
+	addFloorSection(x, z) {
+		var floor = new THREE.PlaneGeometry(100, 100);
+		var floorMaterial = TextureManager.loadedMaterials["tile"];
+		var floorMesh = new THREE.Mesh(floor, floorMaterial);
+		floorMesh.rotation.x = Math.PI / 2;
+		floorMesh.position.set(x * 100 - 350, 0, z * 100 - 250);
+		this.scene.add(floorMesh);
 	}
 
 	addWallBlock(x, z) {
