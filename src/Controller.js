@@ -5,7 +5,7 @@ const KEY_DOWN = 40;
 
 class Controller {
 	constructor() {
-		document.addEventListener("keydown", (ev) => { this.respond(ev) });
+		document.addEventListener("keydown", (ev) => { this.respond(ev); });
 		this.callbacks = {};
 	}
 

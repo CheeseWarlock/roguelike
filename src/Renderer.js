@@ -12,7 +12,7 @@ class Renderer {
 	}
 
 	nextFrame() {
-		requestAnimationFrame(() => { this.nextFrame() });
+		requestAnimationFrame(() => { this.nextFrame(); });
 		this.render();
 	}
 
@@ -37,8 +37,11 @@ class Renderer {
 
 		for (var i=0;i<10;i++) {
 			for (var j=0;j<10;j++) {
-				if (Dungeon.atLocation(i, j) === Dungeon.TILE_WALL) {
+				var a = Dungeon.atLocation(i, j);
+				if (a === Dungeon.TILE_WALL) {
 					this.addWallBlock(i, j);
+				} else if (a === Dungeon.TILE_FLOOR) {
+					this.addFloorSection(i, j);
 				}
 			}
 		}
@@ -47,14 +50,6 @@ class Renderer {
 		for (i in entities) {
 			this.addActor(entities[i].x, entities[i].z, 0);
 		}
-
-		Dungeon.rooms().map((room) => {
-			for (i=room[0]+1;i<room[2];i++) {
-				for (j=room[1]+1;j<room[3];j++) {
-					this.addFloorSection(i, j);
-				}
-			}
-		});
 
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
