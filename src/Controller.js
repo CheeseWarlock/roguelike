@@ -10,7 +10,7 @@ class Controller {
 	}
 
 	respond(ev) {
-		this.callbacks[ev.keyCode].map((func) => { func(); });
+		if (this.callbacks[ev.keyCode]) this.callbacks[ev.keyCode].map((func) => { func(); });
 	}
 }
 
