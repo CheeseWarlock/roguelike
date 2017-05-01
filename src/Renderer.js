@@ -12,7 +12,21 @@ class Renderer {
 		this.render();
 	}
 
+	objTest() {
+		// instantiate the loader
+		var loader = new THREE.OBJLoader();
+		loader.load(
+			'untitled.obj',
+			(obj) => {
+				this.scene.add(obj);
+				obj.position.set(0, 100, 0);
+				obj.scale.set(5,5,5);
+			}
+		);
+	}
+
 	setupGame() {
+		this.objTest();
 		this.dungeon = new Dungeon.Dungeon();
 		this.scene = new THREE.Scene();
 
