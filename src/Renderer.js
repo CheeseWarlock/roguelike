@@ -78,10 +78,19 @@ class Renderer {
 		this.actorMesh = new THREE.Mesh(actor, actorMaterial);
 		this.scene.add(this.actorMesh);
 		this.actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
-		Controller.registerCallback(37, () => { this.actorMesh.position.x -= 100; });
-		Controller.registerCallback(38, () => { this.actorMesh.position.z -= 100; });
-		Controller.registerCallback(39, () => { this.actorMesh.position.x += 100; });
-		Controller.registerCallback(40, () => { this.actorMesh.position.z += 100; });
+		this.actorPosition = [x, z];
+		Controller.registerCallback(37, () => { this.moveCharacter(-1, 0); });
+		Controller.registerCallback(38, () => { this.moveCharacter(0, -1); });
+		Controller.registerCallback(39, () => { this.moveCharacter(1, 0); });
+		Controller.registerCallback(40, () => { this.moveCharacter(0, 1); });
+	}
+
+	moveCharacter(x, z) {
+		if (this.dungeon.atLocation(this.actorPosition[0] + x, this.actorPosition[1] + z) != Dungeon.TILE_WALL) {
+			this.actorMesh.position.x += x * 100;
+			this.actorMesh.position.z += z * 100;
+			this.actorPosition = [this.actorPosition[0] + x, this.actorPosition[1] + z];
+		}
 	}
 
 	render() {
