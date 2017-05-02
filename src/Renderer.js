@@ -9,6 +9,11 @@ class Renderer {
 
 	nextFrame() {
 		requestAnimationFrame(() => { this.nextFrame(); });
+		if (this.animationFrames > 0) {
+			this.actorMesh.position.x += this.animationDirection[0] * 10;
+			this.actorMesh.position.z += this.animationDirection[1] * 10;
+			this.animationFrames -= 1;
+		}
 		this.render();
 	}
 
@@ -86,9 +91,9 @@ class Renderer {
 	}
 
 	moveCharacter(x, z) {
-		if (this.dungeon.atLocation(this.actorPosition[0] + x, this.actorPosition[1] + z) != Dungeon.TILE_WALL) {
-			this.actorMesh.position.x += x * 100;
-			this.actorMesh.position.z += z * 100;
+		if (this.dungeon.atLocation(this.actorPosition[0] + x, this.actorPosition[1] + z) != Dungeon.TILE_WALL && !this.animationFrames) {
+			this.animationFrames = 10;
+			this.animationDirection = [x, z];
 			this.actorPosition = [this.actorPosition[0] + x, this.actorPosition[1] + z];
 		}
 	}
