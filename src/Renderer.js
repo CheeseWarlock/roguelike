@@ -1,6 +1,7 @@
 var Dungeon = require("./Dungeon");
 var TextureManager = require("./TextureManager");
 var Controller = require("./Controller");
+var PlayerCharacter = require("./PlayerCharacter");
 
 class Renderer {
 	constructor() {
@@ -78,16 +79,13 @@ class Renderer {
 	}
 
 	addActor(x, z) {
-		var actor = new THREE.PlaneGeometry(50, 100);
-		var actorMaterial = TextureManager.loadedMaterials["char"];
-		this.actorMesh = new THREE.Mesh(actor, actorMaterial);
+		var actor = new PlayerCharacter((a, b) => {
+			this.moveCharacter(a, b);
+		});
+		this.actorMesh = actor.getMesh();
 		this.scene.add(this.actorMesh);
 		this.actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 		this.actorPosition = [x, z];
-		Controller.registerCallback(37, () => { this.moveCharacter(-1, 0); });
-		Controller.registerCallback(38, () => { this.moveCharacter(0, -1); });
-		Controller.registerCallback(39, () => { this.moveCharacter(1, 0); });
-		Controller.registerCallback(40, () => { this.moveCharacter(0, 1); });
 	}
 
 	moveCharacter(x, z) {
