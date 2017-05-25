@@ -1,20 +1,24 @@
 var TextureManager = require("./TextureManager");
-var Controller = require("./Controller");
-var PlayerCharacter = require("./PlayerCharacter");
 
 class Renderer {
 	constructor(options) {
 		TextureManager.startLoad(() => { this.setupGame(); });
 		this.loadCallback = options.loadCallback;
 		this.actors = {};
+		this.animations = [];
+		this.anim = 0;
 	}
 
 	nextFrame() {
 		requestAnimationFrame(() => { this.nextFrame(); });
+		if (this.animations.length && !this.animationFrames) this.animationFrames = 10;
 		if (this.animationFrames > 0) {
-			this.actorMesh.position.x += this.animationDirection[0] * 10;
-			this.actorMesh.position.z += this.animationDirection[1] * 10;
+			this.animations.map((animation) => {
+				this.actors[animation.id].position.x += animation.x * 10;
+				this.actors[animation.id].position.z += animation.z * 10;
+			});
 			this.animationFrames -= 1;
+			if (this.animationFrames == 0) this.animations = [];
 		}
 		this.render();
 	}
@@ -65,17 +69,23 @@ class Renderer {
 	}
 
 	addActor(entity) {
-		this.actorMesh = entity.getMesh();
-		this.actors[entity.id] = this.actorMesh;
-		this.scene.add(this.actorMesh);
-		this.actorMesh.position.set(entity.x * 100 - 350, 50, entity.z * 100 - 250);
+		var actorMesh = entity.getMesh();
+		this.actors[entity.id] = actorMesh;
+		this.scene.add(actorMesh);
+		actorMesh.position.set(entity.x * 100 - 350, 50, entity.z * 100 - 250);
 		this.actorPosition = [entity.x, entity.z];
 	}
 
 	moveCharacter(x, z, id) {
-		this.animationFrames = 10;
-		this.animationDirection = [x, z];
-		this.actorPosition = [this.actorPosition[0] + x, this.actorPosition[1] + z];
+		this.animations.push({
+			x: x,
+			z: z,
+			id: id
+		});
+	}
+
+	isAnimating() {
+		return this.animationFrames > 0;
 	}
 
 	render() {

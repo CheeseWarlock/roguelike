@@ -25,6 +25,7 @@ class Dungeon {
 		}
 
 		this.addEntity(2, 2, 0);
+		this.addEntity(3, 3, 1);
 	}
 
 	addEntity(x, z, id) {
@@ -37,7 +38,7 @@ class Dungeon {
 	}
 
 	moveEntity(x, z, id) {
-		if (this.atLocation(this.entities[id].x + x, this.entities[id].z + z) != TILE_WALL) {
+		if (!this.renderer.isAnimating() && this.atLocation(this.entities[id].x + x, this.entities[id].z + z) != TILE_WALL) {
 			this.entities[id].x += x;
 			this.entities[id].z += z;
 			this.renderer.moveCharacter(x, z, id);
