@@ -1,4 +1,5 @@
 var DungeonLayout = require("./DungeonLayout");
+var PlayerCharacter = require("./PlayerCharacter");
 
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
@@ -8,6 +9,7 @@ class Dungeon {
 		this.renderer = new options.renderer({
 			loadCallback: () => this.populate()
 		});
+		this.entities = [];
 	}
 
 	populate() {
@@ -22,8 +24,23 @@ class Dungeon {
 			}
 		}
 
-		for (i in this.entities()) {
-			this.renderer.addActor(this.entities()[i].x, this.entities()[i].z, 0);
+		this.addEntity(2, 2, 0);
+	}
+
+	addEntity(x, z, id) {
+		var pc = new PlayerCharacter((x, z, id) => this.moveEntity(x, z, id));
+		pc.id = id;
+		pc.x = x;
+		pc.z = z;
+		this.entities.push(pc);
+		this.renderer.addActor(pc);
+	}
+
+	moveEntity(x, z, id) {
+		if (this.atLocation(this.entities[id].x + x, this.entities[id].z + z) != TILE_WALL) {
+			this.entities[id].x += x;
+			this.entities[id].z += z;
+			this.renderer.moveCharacter(x, z, id);
 		}
 	}
 
@@ -60,16 +77,6 @@ class Dungeon {
 			}
 		});
 		return wall;
-	}
-
-	entities() {
-		return [
-			{
-				x: 2,
-				z: 2,
-				id: 0
-			}
-		];
 	}
 }
 

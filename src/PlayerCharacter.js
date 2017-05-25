@@ -4,10 +4,10 @@ var TextureManager = require("./TextureManager");
 class PlayerCharacter {
 	constructor(motionCallback) {
 		this.motionCallback = motionCallback;
-		Controller.registerCallback(37, () => { this.motionCallback(-1, 0); });
-		Controller.registerCallback(38, () => { this.motionCallback(0, -1); });
-		Controller.registerCallback(39, () => { this.motionCallback(1, 0); });
-		Controller.registerCallback(40, () => { this.motionCallback(0, 1); });
+		Controller.registerCallback(37, () => { this.motionCallback(-1, 0, this.id); });
+		Controller.registerCallback(38, () => { this.motionCallback(0, -1, this.id); });
+		Controller.registerCallback(39, () => { this.motionCallback(1, 0, this.id); });
+		Controller.registerCallback(40, () => { this.motionCallback(0, 1, this.id); });
 	}
 
 	getMesh() {

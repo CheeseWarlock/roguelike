@@ -6,6 +6,7 @@ class Renderer {
 	constructor(options) {
 		TextureManager.startLoad(() => { this.setupGame(); });
 		this.loadCallback = options.loadCallback;
+		this.actors = {};
 	}
 
 	nextFrame() {
@@ -63,22 +64,18 @@ class Renderer {
 		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 	}
 
-	addActor(x, z) {
-		var actor = new PlayerCharacter((a, b) => {
-			this.moveCharacter(a, b);
-		});
-		this.actorMesh = actor.getMesh();
+	addActor(entity) {
+		this.actorMesh = entity.getMesh();
+		this.actors[entity.id] = this.actorMesh;
 		this.scene.add(this.actorMesh);
-		this.actorMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
-		this.actorPosition = [x, z];
+		this.actorMesh.position.set(entity.x * 100 - 350, 50, entity.z * 100 - 250);
+		this.actorPosition = [entity.x, entity.z];
 	}
 
-	moveCharacter(x, z) {
-		if (this.dungeon.atLocation(this.actorPosition[0] + x, this.actorPosition[1] + z) != Dungeon.TILE_WALL && !this.animationFrames) {
-			this.animationFrames = 10;
-			this.animationDirection = [x, z];
-			this.actorPosition = [this.actorPosition[0] + x, this.actorPosition[1] + z];
-		}
+	moveCharacter(x, z, id) {
+		this.animationFrames = 10;
+		this.animationDirection = [x, z];
+		this.actorPosition = [this.actorPosition[0] + x, this.actorPosition[1] + z];
 	}
 
 	render() {
