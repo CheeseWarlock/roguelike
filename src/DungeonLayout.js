@@ -1,7 +1,8 @@
 class DungeonLayout {
 	constructor() {
-		this.size = [10, 10];
-		this.rooms = [[0, 0, 7, 8], [5, 5, 6, 6]];
+		this.size = [12, 12];
+		this.rooms = [[0, 0, 3, 8], [6, 3, 10, 9]];
+		this.halls = [[3, 4, 6, 4]];
 	}
 }
 

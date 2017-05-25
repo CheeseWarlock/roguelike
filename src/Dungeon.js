@@ -13,8 +13,8 @@ class Dungeon {
 	}
 
 	populate() {
-		for (var i=0;i<10;i++) {
-			for (var j=0;j<10;j++) {
+		for (var i=0;i<DungeonLayout.size[0];i++) {
+			for (var j=0;j<DungeonLayout.size[1];j++) {
 				var a = this.atLocation(i, j);
 				if (a === TILE_WALL) {
 					this.renderer.addWallBlock(i, j);
@@ -25,7 +25,6 @@ class Dungeon {
 		}
 
 		this.addEntity(2, 2, 0);
-		this.addEntity(3, 3, 1);
 	}
 
 	addEntity(x, z, id) {
@@ -38,7 +37,7 @@ class Dungeon {
 	}
 
 	moveEntity(x, z, id) {
-		if (!this.renderer.isAnimating() && this.atLocation(this.entities[id].x + x, this.entities[id].z + z) != TILE_WALL) {
+		if (!this.renderer.isAnimating() && this.atLocation(this.entities[id].x + x, this.entities[id].z + z) == TILE_FLOOR) {
 			this.entities[id].x += x;
 			this.entities[id].z += z;
 			this.renderer.moveCharacter(x, z, id);
@@ -50,13 +49,25 @@ class Dungeon {
 	}
 
 	atLocation(x, z) {
-		if (this.isWall(x, z)) {
+		if (this.isWall(x, z) && !this.isHall(x, z)) {
 			return TILE_WALL;
-		} else if (this.isFloor(x, z)) {
+		} else if (this.isFloor(x, z) || this.isHall(x, z)) {
 			return TILE_FLOOR;
 		} else {
 			return null;
 		}
+	}
+
+	isHall(x, z) {
+		var ret = false;
+		DungeonLayout.halls.map((hallway) => {
+			if (hallway[0] == hallway[2]) {
+				if (z >= hallway[1] && z <= hallway[3] && x == hallway[0]) ret = true;
+			} else {
+				if (x >= hallway[0] && x <= hallway[2] && z == hallway[1]) ret = true;
+			}
+		});
+		return ret;
 	}
 
 	isFloor(x, z) {
