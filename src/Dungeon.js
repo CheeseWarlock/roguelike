@@ -4,6 +4,29 @@ const TILE_WALL = 0;
 const TILE_FLOOR = 1;
 
 class Dungeon {
+	constructor(options) {
+		this.renderer = new options.renderer({
+			loadCallback: () => this.populate()
+		});
+	}
+
+	populate() {
+		for (var i=0;i<10;i++) {
+			for (var j=0;j<10;j++) {
+				var a = this.atLocation(i, j);
+				if (a === TILE_WALL) {
+					this.renderer.addWallBlock(i, j);
+				} else if (a === TILE_FLOOR) {
+					this.renderer.addFloorSection(i, j);
+				}
+			}
+		}
+
+		for (i in this.entities()) {
+			this.renderer.addActor(this.entities()[i].x, this.entities()[i].z, 0);
+		}
+	}
+
 	rooms() {
 		return DungeonLayout.rooms;
 	}

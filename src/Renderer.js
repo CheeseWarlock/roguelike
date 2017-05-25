@@ -1,11 +1,11 @@
-var Dungeon = require("./Dungeon");
 var TextureManager = require("./TextureManager");
 var Controller = require("./Controller");
 var PlayerCharacter = require("./PlayerCharacter");
 
 class Renderer {
-	constructor() {
+	constructor(options) {
 		TextureManager.startLoad(() => { this.setupGame(); });
+		this.loadCallback = options.loadCallback;
 	}
 
 	nextFrame() {
@@ -19,7 +19,6 @@ class Renderer {
 	}
 
 	setupGame() {
-		this.dungeon = new Dungeon.Dungeon();
 		this.scene = new THREE.Scene();
 
 		var directionalLight = new THREE.DirectionalLight(0xff0000, 0.6);
@@ -38,21 +37,7 @@ class Renderer {
 		this.camera.position.set(0, 800, 400);
 		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-		for (var i=0;i<10;i++) {
-			for (var j=0;j<10;j++) {
-				var a = this.dungeon.atLocation(i, j);
-				if (a === Dungeon.TILE_WALL) {
-					this.addWallBlock(i, j);
-				} else if (a === Dungeon.TILE_FLOOR) {
-					this.addFloorSection(i, j);
-				}
-			}
-		}
-
-		var entities = this.dungeon.entities();
-		for (i in entities) {
-			this.addActor(entities[i].x, entities[i].z, 0);
-		}
+		this.loadCallback();
 
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -101,4 +86,4 @@ class Renderer {
 	}
 }
 
-module.exports = new Renderer();
+module.exports = Renderer;
