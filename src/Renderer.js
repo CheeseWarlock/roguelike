@@ -16,6 +16,10 @@ class Renderer {
 			this.animations.map((animation) => {
 				this.actors[animation.id].position.x += animation.x * 10;
 				this.actors[animation.id].position.z += animation.z * 10;
+				if (animation.id == 0) {
+					this.camera.position.x += animation.x * 10;
+					this.camera.position.z += animation.z * 10;
+				}
 			});
 			this.animationFrames -= 1;
 			if (this.animationFrames == 0) this.animations = [];
@@ -39,8 +43,8 @@ class Renderer {
 		this.scene.add(directionalLight);
 
 		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-		this.camera.position.set(0, 800, 400);
-		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+		this.camera.position.set(-150, 800, 250);
+		this.camera.lookAt(new THREE.Vector3(-150, 0, -150));
 
 		this.loadCallback();
 
