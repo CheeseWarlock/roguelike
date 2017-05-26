@@ -19,6 +19,8 @@ class Renderer {
 				if (animation.id == 0) {
 					this.camera.position.x += animation.x * 10;
 					this.camera.position.z += animation.z * 10;
+					this.characterLight.position.x += animation.x * 10;
+					this.characterLight.position.z += animation.z * 10;
 				}
 			});
 			this.animationFrames -= 1;
@@ -29,15 +31,16 @@ class Renderer {
 
 	setupGame() {
 		this.scene = new THREE.Scene();
+		this.scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 
-		var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-		directionalLight.position.set(700, 1000, 300);
-		directionalLight.castShadow = true;
-		this.scene.add(directionalLight);
-
-		var ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-		this.scene.add(ambientLight);
-
+		this.characterLight = new THREE.PointLight(0xffddaa, 1, 1000, 1);
+		this.characterLight.position.set(-150, 20, -50);
+		this.characterLight.castShadow = true;
+		this.characterLight.shadow.mapSize.width = 2048;
+		this.characterLight.shadow.mapSize.height = 2048;
+		this.characterLight.shadow.camera.near = 0.5;
+		this.characterLight.shadow.camera.far = 5000;
+		this.scene.add(this.characterLight);
 
 		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
 		this.camera.position.set(-150, 800, 250);
@@ -47,16 +50,13 @@ class Renderer {
 
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.shadowMapEnabled = true;
-		this.renderer.shadowMapSoft = true;
-		this.renderer.shadowCameraNear = 3;
-    this.renderer.shadowCameraFar = this.camera.far;
-    this.renderer.shadowCameraFov = 50;
+		this.renderer.shadowMap.enabled = true;
+		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    this.renderer.shadowMapBias = 0.0039;
+    this.renderer.shadowMapBias = 0;
     this.renderer.shadowMapDarkness = 0.5;
-    this.renderer.shadowMapWidth = 1024;
-    this.renderer.shadowMapHeight = 1024;
+    this.renderer.shadowMapWidth = 2048;
+    this.renderer.shadowMapHeight = 2048;
 
 		document.body.appendChild(this.renderer.domElement);
 		this.nextFrame();

@@ -44,7 +44,7 @@ class TextureManager {
 			var _texture = texture;
 			this.loader.load(texture.file, (loadedTexture) => {
 				this.loadedTextures[_texture.name] = loadedTexture;
-				this.loadedMaterials[_texture.name] = new THREE.MeshPhongMaterial(
+				this.loadedMaterials[_texture.name] = new THREE.MeshLambertMaterial(
 					{
 						map: loadedTexture,
 						side: _texture.side,
