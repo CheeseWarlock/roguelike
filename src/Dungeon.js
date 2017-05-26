@@ -3,6 +3,7 @@ var PlayerCharacter = require("./PlayerCharacter");
 
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
+const TILE_INVISIBLE = 2;
 
 class Dungeon {
 	constructor(options) {
@@ -20,6 +21,8 @@ class Dungeon {
 					this.renderer.addWallBlock(i, j);
 				} else if (a === TILE_FLOOR) {
 					this.renderer.addFloorSection(i, j);
+				} else if (a === TILE_INVISIBLE) {
+					this.renderer.addInvisibleWallBlock(i, j);
 				}
 			}
 		}
@@ -53,9 +56,23 @@ class Dungeon {
 			return TILE_WALL;
 		} else if (this.isFloor(x, z) || this.isHall(x, z)) {
 			return TILE_FLOOR;
+		} else if (this.isInvisibleWall(x, z)) {
+			return TILE_INVISIBLE;
 		} else {
 			return null;
 		}
+	}
+
+	isInvisibleWall(x, z) {
+		var ret = false;
+		DungeonLayout.halls.map((hallway) => {
+			if (hallway[0] == hallway[2]) {
+				if (z > hallway[1] && z < hallway[3] && (x == hallway[0] + 1 || x == hallway[0] - 1)) ret = true;
+			} else {
+				if (x > hallway[0] && x < hallway[2] && (z == hallway[1] + 1 || z == hallway[1] - 1)) ret = true;
+			}
+		});
+		return ret;
 	}
 
 	isHall(x, z) {
@@ -95,5 +112,6 @@ class Dungeon {
 module.exports = {
 	TILE_WALL: TILE_WALL,
 	TILE_FLOOR: TILE_FLOOR,
+	TILE_INVISIBLE: TILE_INVISIBLE,
 	Dungeon: Dungeon
 };

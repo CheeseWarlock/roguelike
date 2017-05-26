@@ -83,6 +83,14 @@ class Renderer {
 		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
 	}
 
+	addInvisibleWallBlock(x, z) {
+		var wall = new THREE.BoxGeometry(100, 100, 100);
+		var wallMesh = new THREE.Mesh(wall, new THREE.MeshBasicMaterial( { transparent: true, opacity: 0 } ));
+		wallMesh.castShadow = true;
+		this.scene.add(wallMesh);
+		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
+	}
+
 	addActor(entity) {
 		var actorMesh = entity.getMesh();
 		this.actors[entity.id] = actorMesh;
