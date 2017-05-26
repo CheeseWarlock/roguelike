@@ -17,12 +17,13 @@ class Dungeon {
 		for (var i=0;i<DungeonLayout.size[0];i++) {
 			for (var j=0;j<DungeonLayout.size[1];j++) {
 				var a = this.atLocation(i, j);
+				var h = (i > 5 ? 50 : 0);
 				if (a === TILE_WALL) {
-					this.renderer.addWallBlock(i, j);
+					this.renderer.addWallBlock(i, j, h);
 				} else if (a === TILE_FLOOR) {
-					this.renderer.addFloorSection(i, j);
+					this.renderer.addFloorSection(i, j, h);
 				} else if (a === TILE_INVISIBLE) {
-					this.renderer.addInvisibleWallBlock(i, j);
+					this.renderer.addInvisibleWallBlock(i, j, h);
 				}
 			}
 		}

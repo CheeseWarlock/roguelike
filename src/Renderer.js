@@ -7,6 +7,7 @@ class Renderer {
 		this.actors = {};
 		this.animations = [];
 		this.anim = 0;
+		this.box = new THREE.BoxGeometry(100, 100, 100);
 	}
 
 	nextFrame() {
@@ -62,33 +63,64 @@ class Renderer {
 		this.nextFrame();
 	}
 
-	addFloorSection(x, z) {
+	addFloorSection(x, z, h) {
 		var floor = new THREE.PlaneGeometry(100, 100);
-		var floorMaterial = TextureManager.loadedMaterials["tile"];
+		if (x == 4 && z == 4) {
+			floor = new THREE.Geometry();
+			floor.vertices.push(
+				new THREE.Vector3(-50, 0, 50),
+				new THREE.Vector3(-50, 0, -50),
+				new THREE.Vector3(50, 25, -50),
+				new THREE.Vector3(50, 25, 50)
+			);
+			floor.faces.push(
+				new THREE.Face3(0, 1, 2),
+				new THREE.Face3(0, 3, 2)
+			);
+		}
+
+		if (x == 5 && z == 4) {
+			floor = new THREE.Geometry();
+			floor.vertices.push(
+				new THREE.Vector3(-50, 25, 50),
+				new THREE.Vector3(-50, 25, -50),
+				new THREE.Vector3(50, 50, -50),
+				new THREE.Vector3(50, 50, 50)
+			);
+			floor.faces.push(
+				new THREE.Face3(0, 1, 2),
+				new THREE.Face3(0, 3, 2)
+			);
+		}
+
+		var floorMaterial = new THREE.MeshLambertMaterial({ color: 0x91735A, side: THREE.DoubleSide });
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
-		floorMesh.rotation.x = Math.PI / 2;
-		floorMesh.position.set(x * 100 - 350, 0, z * 100 - 250);
+		if (!((x == 4 || x == 5) && z == 4)) {
+			floorMesh.rotation.x = Math.PI / 2;
+		}
+		//floorMesh.rotation.x = Math.PI / 2;
+		floorMesh.position.set(x * 100 - 350, h, z * 100 - 250);
 		floorMesh.receiveShadow = true;
 		this.scene.add(floorMesh);
 	}
 
-	addWallBlock(x, z) {
-		var wall = new THREE.BoxGeometry(100, 100, 100);
+	addWallBlock(x, z, h) {
+		var wall = this.box;
 		var wallSideMaterial = TextureManager.loadedMaterials["wall"];
 		var wallTopMaterial = TextureManager.loadedMaterials["walltop"];
 		var wallMesh = new THREE.Mesh(wall, new THREE.MeshFaceMaterial([wallSideMaterial,wallSideMaterial,wallTopMaterial,wallSideMaterial,wallSideMaterial,wallSideMaterial]));
 		wallMesh.castShadow = true;
 		wallMesh.receiveShadow = true;
 		this.scene.add(wallMesh);
-		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
+		wallMesh.position.set(x * 100 - 350, 50 + h, z * 100 - 250);
 	}
 
-	addInvisibleWallBlock(x, z) {
-		var wall = new THREE.BoxGeometry(100, 100, 100);
+	addInvisibleWallBlock(x, z, h) {
+		var wall = this.box;
 		var wallMesh = new THREE.Mesh(wall, new THREE.MeshBasicMaterial( { transparent: true, opacity: 0, side: THREE.BackSide } ));
 		wallMesh.castShadow = true;
 		this.scene.add(wallMesh);
-		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
+		wallMesh.position.set(x * 100 - 350, 50 + h, z * 100 - 250);
 	}
 
 	addActor(entity) {
