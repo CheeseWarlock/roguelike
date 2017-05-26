@@ -85,7 +85,7 @@ class Renderer {
 
 	addInvisibleWallBlock(x, z) {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
-		var wallMesh = new THREE.Mesh(wall, new THREE.MeshBasicMaterial( { transparent: true, opacity: 0 } ));
+		var wallMesh = new THREE.Mesh(wall, new THREE.MeshBasicMaterial( { transparent: true, opacity: 0, side: THREE.BackSide } ));
 		wallMesh.castShadow = true;
 		this.scene.add(wallMesh);
 		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
