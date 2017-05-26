@@ -9,6 +9,20 @@ class TextureManager {
 				side: THREE.DoubleSide
 			},
 			{
+				file: "wall.png",
+				name: "wall",
+				repeats: [1, 1],
+				transparent: false,
+				side: THREE.FrontSide
+			},
+			{
+				file: "walltop.png",
+				name: "walltop",
+				repeats: [1, 1],
+				transparent: false,
+				side: THREE.FrontSide
+			},
+			{
 				file: "char.png",
 				name: "char",
 				repeats: [1, 1],
