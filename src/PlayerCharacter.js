@@ -1,8 +1,10 @@
 var Controller = require("./Controller");
+var Character = require("./Character");
 var TextureManager = require("./TextureManager");
 
-class PlayerCharacter {
+class PlayerCharacter extends Character {
 	constructor(motionCallback) {
+		super();
 		this.motionCallback = motionCallback;
 		Controller.registerCallback(37, () => { this.motionCallback(-1, 0, this.id); });
 		Controller.registerCallback(38, () => { this.motionCallback(0, -1, this.id); });
