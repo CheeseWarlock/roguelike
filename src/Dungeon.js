@@ -46,10 +46,10 @@ class Dungeon {
 		this.renderer.addActor(pc);
 	}
 
-	spaceHasEntity(x, z) {
-		var ret = false;
+	entityAtPosition(x, z) {
+		var ret = null;
 		this.entities.map((entity) => {
-			if (x == entity.x && z == entity.z) ret = true;
+			if (x == entity.x && z == entity.z) ret = entity;
 		});
 		return ret;
 	}
@@ -64,9 +64,10 @@ class Dungeon {
 			z: this.entities[id].z + z
 		};
 		if (!this.renderer.isAnimating()) {
-			if (this.spaceHasEntity(target.x, target.z)) {
+			var entity = this.entityAtPosition(target.x, target.z);
+			if (entity) {
 				// Combat
-
+				this.doCombat(entity);
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				// Movement
 				this.moveEntity(x, z, id);
@@ -80,6 +81,15 @@ class Dungeon {
 			this.entities[id].z += z;
 			this.renderer.moveCharacter(x, z, id);
 		}
+	}
+
+	doCombat(entity) {
+		this.playerCharacter.currentHealth -= 1;
+		entity.currentHealth -= 1;
+		this.renderer.updateHUD({
+			currentHealth: this.playerCharacter.currentHealth,
+			maxHealth: this.playerCharacter.maxHealth
+		});
 	}
 
 	rooms() {

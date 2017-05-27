@@ -1,7 +1,7 @@
 class Character {
 	constructor() {
-		this.maxHP = 10;
-		this.currentHP = this.maxHP;
+		this.maxHealth = 10;
+		this.currentHealth = this.maxHealth;
 		this.attack = 2;
 	}
 
@@ -10,7 +10,7 @@ class Character {
 	}
 
 	doTurn() {
-		
+
 	}
 }
 
