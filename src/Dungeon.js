@@ -1,6 +1,7 @@
 var DungeonLayout = require("./DungeonLayout");
 var PlayerCharacter = require("./PlayerCharacter");
 var Mandragora = require("./Mandragora");
+var Bat = require("./Bat");
 
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
@@ -31,7 +32,7 @@ class Dungeon {
 		this.playerCharacter = new PlayerCharacter((x, z, id) => this.handlePlayerAction(x, z, id));
 		this.addEntity(2, 2, 0, this.playerCharacter);
 		this.addEntity(4, 4, 1, new Mandragora());
-		this.addEntity(1, 9, 2, new Mandragora());
+		this.addEntity(1, 9, 2, new Bat());
 		this.renderer.updateHUD({
 			currentHealth: 10,
 			maxHealth: 10
@@ -72,6 +73,12 @@ class Dungeon {
 				this.moveEntity(x, z, id);
 			}
 		}
+		this.entities.map((entity) => {
+			var action = entity.doTurn();
+			if (action) {
+				this.moveEntity(action[0], action[1], entity.id);
+			}
+		});
 	}
 
 	moveEntity(x, z, id) {
