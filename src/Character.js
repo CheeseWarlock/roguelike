@@ -1,6 +1,7 @@
 class Character {
 	constructor() {
-		this.hp = 10;
+		this.maxHP = 10;
+		this.currentHP = this.maxHP;
 		this.attack = 2;
 	}
 

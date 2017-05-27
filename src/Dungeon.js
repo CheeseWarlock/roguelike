@@ -1,5 +1,6 @@
 var DungeonLayout = require("./DungeonLayout");
 var PlayerCharacter = require("./PlayerCharacter");
+var Mandragora = require("./Mandragora");
 
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
@@ -27,11 +28,12 @@ class Dungeon {
 			}
 		}
 
-		this.addEntity(2, 2, 0);
+		this.addEntity(2, 2, 0, new PlayerCharacter((x, z, id) => this.moveEntity(x, z, id)));
+		this.addEntity(4, 4, 1, new Mandragora());
 	}
 
-	addEntity(x, z, id) {
-		var pc = new PlayerCharacter((x, z, id) => this.moveEntity(x, z, id));
+	addEntity(x, z, id, character) {
+		var pc = character;
 		pc.id = id;
 		pc.x = x;
 		pc.z = z;
