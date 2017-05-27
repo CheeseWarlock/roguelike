@@ -2,3 +2,19 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
+#game-container {
+	position: absolute;
+}
+
+#hud-container {
+	position: absolute;
+}
+
+#player-health {
+	color: red;
+}
+
+#player-mana {
+	color: blue;
+}

@@ -28,8 +28,13 @@ class Dungeon {
 			}
 		}
 
-		this.addEntity(2, 2, 0, new PlayerCharacter((x, z, id) => this.moveEntity(x, z, id)));
+		this.playerCharacter = new PlayerCharacter((x, z, id) => this.moveEntity(x, z, id));
+		this.addEntity(2, 2, 0, this.playerCharacter);
 		this.addEntity(4, 4, 1, new Mandragora());
+		this.renderer.updateHUD({
+			currentHealth: 10,
+			maxHealth: 10
+		});
 	}
 
 	addEntity(x, z, id, character) {

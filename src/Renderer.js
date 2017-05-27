@@ -9,6 +9,21 @@ class Renderer {
 		this.anim = 0;
 	}
 
+	setupHUD() {
+		var playerHealth = document.createElement("h1");
+		var playerMana = document.createElement("h1");
+		playerHealth.id = "player-health";
+		playerMana.id = "player-mana";
+		var hud = document.getElementById("hud-container");
+		hud.appendChild(playerHealth);
+		hud.appendChild(playerMana);
+	}
+
+	updateHUD(stats) {
+		document.getElementById("player-health").textContent = "HP: " + stats.currentHealth + "/" + stats.maxHealth;
+		document.getElementById("player-mana").textContent = "MP: Coming soon!";		
+	}
+
 	nextFrame() {
 		requestAnimationFrame(() => { this.nextFrame(); });
 		if (this.animations.length && !this.animationFrames) this.animationFrames = 10;
@@ -30,6 +45,8 @@ class Renderer {
 	}
 
 	setupGame() {
+		this.setupHUD();
+
 		this.scene = new THREE.Scene();
 		this.scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 
@@ -58,7 +75,7 @@ class Renderer {
     this.renderer.shadowMapWidth = 2048;
     this.renderer.shadowMapHeight = 2048;
 
-		document.body.appendChild(this.renderer.domElement);
+		document.getElementById("game-container").appendChild(this.renderer.domElement);
 		this.nextFrame();
 	}
 
