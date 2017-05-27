@@ -28,7 +28,7 @@ class Dungeon {
 			}
 		}
 
-		this.playerCharacter = new PlayerCharacter((x, z, id) => this.moveEntity(x, z, id));
+		this.playerCharacter = new PlayerCharacter((x, z, id) => this.handlePlayerAction(x, z, id));
 		this.addEntity(2, 2, 0, this.playerCharacter);
 		this.addEntity(4, 4, 1, new Mandragora());
 		this.renderer.updateHUD({
@@ -44,6 +44,34 @@ class Dungeon {
 		pc.z = z;
 		this.entities.push(pc);
 		this.renderer.addActor(pc);
+	}
+
+	spaceHasEntity(x, z) {
+		var ret = false;
+		this.entities.map((entity) => {
+			if (x == entity.x && z == entity.z) ret = true;
+		});
+		return ret;
+	}
+
+	spaceIsMoveable(x, z) {
+		return this.atLocation(x, z) == TILE_FLOOR;
+	}
+
+	handlePlayerAction(x, z, id) {
+		var target = {
+			x: this.entities[id].x + x,
+			z: this.entities[id].z + z
+		};
+		if (!this.renderer.isAnimating()) {
+			if (this.spaceHasEntity(target.x, target.z)) {
+				// Combat
+
+			} else if (this.spaceIsMoveable(target.x, target.z)) {
+				// Movement
+				this.moveEntity(x, z, id);
+			}
+		}
 	}
 
 	moveEntity(x, z, id) {
