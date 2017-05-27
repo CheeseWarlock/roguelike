@@ -116,6 +116,10 @@ class Renderer {
 		this.actorPosition = [entity.x, entity.z];
 	}
 
+	removeActor(id) {
+		this.scene.remove(this.actors[id]);
+	}
+
 	moveCharacter(x, z, id) {
 		this.animations.push({
 			x: x,

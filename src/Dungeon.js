@@ -31,6 +31,7 @@ class Dungeon {
 		this.playerCharacter = new PlayerCharacter((x, z, id) => this.handlePlayerAction(x, z, id));
 		this.addEntity(2, 2, 0, this.playerCharacter);
 		this.addEntity(4, 4, 1, new Mandragora());
+		this.addEntity(1, 9, 2, new Mandragora());
 		this.renderer.updateHUD({
 			currentHealth: 10,
 			maxHealth: 10
@@ -66,10 +67,8 @@ class Dungeon {
 		if (!this.renderer.isAnimating()) {
 			var entity = this.entityAtPosition(target.x, target.z);
 			if (entity) {
-				// Combat
 				this.doCombat(entity);
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
-				// Movement
 				this.moveEntity(x, z, id);
 			}
 		}
@@ -85,11 +84,19 @@ class Dungeon {
 
 	doCombat(entity) {
 		this.playerCharacter.currentHealth -= 1;
-		entity.currentHealth -= 1;
+		entity.currentHealth -= 5;
+		if (entity.currentHealth <= 0) {
+			this.kill(entity);
+		}
 		this.renderer.updateHUD({
 			currentHealth: this.playerCharacter.currentHealth,
 			maxHealth: this.playerCharacter.maxHealth
 		});
+	}
+
+	kill(entity) {
+		this.entities.splice(this.entities.indexOf(entity), 1);
+		this.renderer.removeActor(entity.id);
 	}
 
 	rooms() {
