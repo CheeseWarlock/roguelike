@@ -82,7 +82,11 @@ class Dungeon {
 	}
 
 	moveEntity(x, z, id) {
-		if (!this.renderer.isAnimating() && this.atLocation(this.entities[id].x + x, this.entities[id].z + z) == TILE_FLOOR) {
+		var target = {
+			x: this.entities[id].x + x,
+			z: this.entities[id].z + z
+		};
+		if (this.spaceIsMoveable(target.x, target.z) && !this.entityAtPosition(target.x, target.z)) {
 			this.entities[id].x += x;
 			this.entities[id].z += z;
 			this.renderer.moveCharacter(x, z, id);
