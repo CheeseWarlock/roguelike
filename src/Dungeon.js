@@ -72,13 +72,13 @@ class Dungeon {
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);
 			}
+			this.entities.map((entity) => {
+				var action = entity.doTurn();
+				if (action) {
+					this.moveEntity(action[0], action[1], entity.id);
+				}
+			});
 		}
-		this.entities.map((entity) => {
-			var action = entity.doTurn();
-			if (action) {
-				this.moveEntity(action[0], action[1], entity.id);
-			}
-		});
 	}
 
 	moveEntity(x, z, id) {
