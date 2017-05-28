@@ -33,6 +33,9 @@ class Dungeon {
 		this.addEntity(2, 2, 0, this.playerCharacter);
 		this.addEntity(4, 4, 1, new Mandragora());
 		this.addEntity(1, 9, 2, new Bat());
+		this.addEntity(1, 10, 3, new Bat());
+		this.addEntity(1, 11, 4, new Bat());
+		this.addEntity(2, 11, 5, new Bat());
 		this.renderer.updateHUD({
 			currentHealth: 10,
 			maxHealth: 10

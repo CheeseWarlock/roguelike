@@ -129,7 +129,7 @@ class Renderer {
 	}
 
 	isAnimating() {
-		return this.animationFrames > 0;
+		return this.animationFrames > 0 || this.animations.length > 0;
 	}
 
 	render() {
