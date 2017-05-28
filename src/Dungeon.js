@@ -12,7 +12,7 @@ class Dungeon {
 		this.renderer = new options.renderer({
 			loadCallback: () => this.populate()
 		});
-		this.entities = [];
+		this.entities = new Map();
 	}
 
 	populate() {
@@ -47,13 +47,13 @@ class Dungeon {
 		pc.id = id;
 		pc.x = x;
 		pc.z = z;
-		this.entities.push(pc);
+		this.entities.set(id, pc);
 		this.renderer.addActor(pc);
 	}
 
 	entityAtPosition(x, z) {
 		var ret = null;
-		this.entities.map((entity) => {
+		this.entities.forEach((entity) => {
 			if (x == entity.x && z == entity.z) ret = entity;
 		});
 		return ret;
@@ -65,8 +65,8 @@ class Dungeon {
 
 	handlePlayerAction(x, z, id) {
 		var target = {
-			x: this.entities[id].x + x,
-			z: this.entities[id].z + z
+			x: this.entities.get(id).x + x,
+			z: this.entities.get(id).z + z
 		};
 		if (!this.renderer.isAnimating()) {
 			var entity = this.entityAtPosition(target.x, target.z);
@@ -75,7 +75,7 @@ class Dungeon {
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);
 			}
-			this.entities.map((entity) => {
+			this.entities.forEach((entity) => {
 				var action = entity.doTurn();
 				if (action) {
 					this.moveEntity(action[0], action[1], entity.id);
@@ -86,12 +86,12 @@ class Dungeon {
 
 	moveEntity(x, z, id) {
 		var target = {
-			x: this.entities[id].x + x,
-			z: this.entities[id].z + z
+			x: this.entities.get(id).x + x,
+			z: this.entities.get(id).z + z
 		};
 		if (this.spaceIsMoveable(target.x, target.z) && !this.entityAtPosition(target.x, target.z)) {
-			this.entities[id].x += x;
-			this.entities[id].z += z;
+			this.entities.get(id).x += x;
+			this.entities.get(id).z += z;
 			this.renderer.moveCharacter(x, z, id);
 		}
 	}
@@ -109,7 +109,7 @@ class Dungeon {
 	}
 
 	kill(entity) {
-		this.entities.splice(this.entities.indexOf(entity), 1);
+		this.entities.delete(entity.id);
 		this.renderer.removeActor(entity.id);
 	}
 

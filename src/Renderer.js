@@ -4,7 +4,7 @@ class Renderer {
 	constructor(options) {
 		TextureManager.startLoad(() => { this.setupGame(); });
 		this.loadCallback = options.loadCallback;
-		this.actors = {};
+		this.actors = new Map();
 		this.animations = [];
 		this.anim = 0;
 	}
