@@ -132,8 +132,10 @@ class Renderer {
 	}
 
 	updateActor(entity) {
-		this.removeActor(entity.id);
-		this.addActor(entity);
+		const actor = this.actors[entity.id]
+		const healthBar = this.makeHealthBar(100 * entity.currentHealth / entity.maxHealth, actor.children[0]);
+		actor.remove(actor.children[1]);
+		actor.add(healthBar);
 	}
 
 	removeActor(id) {
