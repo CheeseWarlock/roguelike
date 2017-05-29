@@ -17,8 +17,35 @@ class Dungeon {
 	}
 
 	populate() {
-		for (var i=0;i<DungeonLayout.size[0];i++) {
-			for (var j=0;j<DungeonLayout.size[1];j++) {
+		this.playerCharacter = new PlayerCharacter((x, z, id) => this.handlePlayerAction(x, z, id));
+		this.addEntity(2, 2, 0, this.playerCharacter);
+
+		this.reveal(2, 2);
+
+		this.addEntity(4, 4, 1, new Mandragora());
+		this.addEntity(1, 11, 4, new Bat());
+		this.addEntity(2, 11, 5, new Bat());
+		this.renderer.updateHUD({
+			currentHealth: 10,
+			maxHealth: 10
+		});
+	}
+
+	reveal(x, z) {
+		let xMin = x;
+		let xMax = x;
+		while (this.atLocation(xMin, z) === TILE_FLOOR) xMin--;
+		while (this.atLocation(xMax, z) === TILE_FLOOR) xMax++;
+
+		let zMin = z;
+		let zMax = z;
+		while (this.atLocation(x, zMin) === TILE_FLOOR) zMin--;
+		while (this.atLocation(x, zMax) === TILE_FLOOR) zMax++;
+
+		//for (var i=0;i<DungeonLayout.size[0];i++) {
+		//	for (var j=0;j<DungeonLayout.size[1];j++) {
+		for (var i=xMin;i<=xMax;i++) {
+			for (var j=zMin;j<=zMax;j++) {
 				var a = this.atLocation(i, j);
 				if (a === TILE_WALL) {
 					this.renderer.addWallBlock(i, j);
@@ -32,18 +59,6 @@ class Dungeon {
 				}
 			}
 		}
-
-		this.playerCharacter = new PlayerCharacter((x, z, id) => this.handlePlayerAction(x, z, id));
-		this.addEntity(2, 2, 0, this.playerCharacter);
-		this.addEntity(4, 4, 1, new Mandragora());
-		this.addEntity(1, 9, 2, new Bat());
-		this.addEntity(1, 10, 3, new Bat());
-		this.addEntity(1, 11, 4, new Bat());
-		this.addEntity(2, 11, 5, new Bat());
-		this.renderer.updateHUD({
-			currentHealth: 10,
-			maxHealth: 10
-		});
 	}
 
 	addEntity(x, z, id, character) {
@@ -100,6 +115,7 @@ class Dungeon {
 			return !(door[0] == x && door[1] == z);
 		});
 		this.renderer.removeDoor(x, z);
+		this.reveal(x * 2 - this.playerCharacter.x, z * 2 - this.playerCharacter.z);
 	}
 
 	moveEntity(x, z, id) {
