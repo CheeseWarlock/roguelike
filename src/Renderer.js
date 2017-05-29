@@ -1,4 +1,5 @@
 var TextureManager = require("./TextureManager");
+var HealthBar = require("./HealthBar");
 
 class Renderer {
 	constructor(options) {
@@ -120,13 +121,7 @@ class Renderer {
 	}
 
 	makeHealthBar(percent, target) {
-		const fullHealth = new THREE.Mesh(new THREE.BoxGeometry(percent, 10, 10), new THREE.MeshBasicMaterial({color: 0xff0000}));
-		const emptyHealth = new THREE.Mesh(new THREE.BoxGeometry((100 - percent), 10, 10), new THREE.MeshBasicMaterial({color: 0x000000}));
-		fullHealth.position.x = -50 + percent/2;
-		emptyHealth.position.x = 50 - (100-percent)/2;
-		const healthBar = new THREE.Object3D();
-		healthBar.add(fullHealth);
-		healthBar.add(emptyHealth);
+		const healthBar = new HealthBar(percent);
 		healthBar.position.set(target.position.x, target.position.y + 80, target.position.z);
 		return healthBar;
 	}
