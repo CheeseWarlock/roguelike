@@ -6,6 +6,10 @@ class Bat extends Character {
 		this.attack = 1;
 	}
 
+	getMesh() {
+		return new THREE.Mesh(new THREE.BoxGeometry(30, 60, 30), new THREE.MeshPhongMaterial({color: 0x552288}));
+	}
+
 	doTurn(dungeon) {
 		if (this.currentHealth < 10) {
 			const xdiff = this.x - dungeon.playerCharacter.x;

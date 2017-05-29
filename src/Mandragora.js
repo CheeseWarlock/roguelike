@@ -6,6 +6,10 @@ class Mandragora extends Character {
 		this.attack = 2;
 	}
 
+	getMesh() {
+		return new THREE.Mesh(new THREE.BoxGeometry(60, 70, 60), new THREE.MeshPhongMaterial({color: 0x226600}));
+	}
+
 	doTurn(dungeon) {
 		const xdiff = this.x - dungeon.playerCharacter.x;
 		const zdiff = this.z - dungeon.playerCharacter.z;

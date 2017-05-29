@@ -8,6 +8,9 @@ body {
 }
 
 #hud-container {
+	background-color: rgba(0, 0, 0, 0.5);
+	font-family: sans-serif;
+	padding: 10px;
 	position: absolute;
 }
 

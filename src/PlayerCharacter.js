@@ -13,9 +13,7 @@ class PlayerCharacter extends Character {
 	}
 
 	getMesh() {
-		var actor = new THREE.PlaneGeometry(50, 100);
-		var actorMaterial = TextureManager.loadedMaterials["char"];
-		return new THREE.Mesh(actor, actorMaterial);
+		return new THREE.Mesh(new THREE.BoxGeometry(50, 100, 50), new THREE.MeshPhongMaterial({color: 0x444444}));
 	}
 }
 
