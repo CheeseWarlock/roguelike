@@ -17,11 +17,11 @@ class Bat extends Character {
 			if (Math.abs(xdiff) + Math.abs(zdiff) == 1) {
 				return ["attack"];
 			} else {
-				if (this.x > dungeon.playerCharacter.x) {
+				if (this.x > dungeon.playerCharacter.x && dungeon.spaceIsMoveable(this.x - 1, this.z)) {
 					return ["move", -1, 0];
-				} else if (this.x < dungeon.playerCharacter.x) {
+				} else if (this.x < dungeon.playerCharacter.x && dungeon.spaceIsMoveable(this.x + 1, this.z)) {
 					return ["move", 1, 0];
-				} else if (this.z > dungeon.playerCharacter.z) {
+				} else if (this.z > dungeon.playerCharacter.z && dungeon.spaceIsMoveable(this.x, this.z - 1)) {
 					return ["move", 0, -1];
 				} else {
 					return ["move", 0, 1];

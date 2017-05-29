@@ -60,7 +60,7 @@ class Dungeon {
 	}
 
 	spaceIsMoveable(x, z) {
-		return this.atLocation(x, z) == TILE_FLOOR;
+		return this.atLocation(x, z) == TILE_FLOOR && !this.entityAtPosition(x, z);
 	}
 
 	handlePlayerAction(x, z, id) {
@@ -93,7 +93,7 @@ class Dungeon {
 			x: this.entities.get(id).x + x,
 			z: this.entities.get(id).z + z
 		};
-		if (this.spaceIsMoveable(target.x, target.z) && !this.entityAtPosition(target.x, target.z)) {
+		if (this.spaceIsMoveable(target.x, target.z)) {
 			this.entities.get(id).x += x;
 			this.entities.get(id).z += z;
 			this.renderer.moveCharacter(x, z, id);
