@@ -6,6 +6,7 @@ class Renderer {
 		TextureManager.startLoad(() => { this.setupGame(); });
 		this.loadCallback = options.loadCallback;
 		this.actors = new Map();
+		this.doors = new Map();
 		this.animations = [];
 		this.anim = 0;
 	}
@@ -87,6 +88,17 @@ class Renderer {
 
 		document.getElementById("game-container").appendChild(this.renderer.domElement);
 		this.nextFrame();
+	}
+
+	addDoor(x, z) {
+		const door = new THREE.Mesh(new THREE.BoxGeometry(100, 100, 100), new THREE.MeshPhongMaterial({color: 0x555555}));
+		door.position.set(x * 100 - 350, 50, z * 100 - 250);
+		this.scene.add(door);
+		this.doors[[x, z]] = door;
+	}
+
+	removeDoor(x, z) {
+		this.scene.remove(this.doors[[x, z]]);
 	}
 
 	addFloorSection(x, z) {

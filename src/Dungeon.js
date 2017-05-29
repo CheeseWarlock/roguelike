@@ -6,6 +6,7 @@ var Bat = require("./Bat");
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
 const TILE_INVISIBLE = 2;
+const TILE_DOOR = 3;
 
 class Dungeon {
 	constructor(options) {
@@ -21,10 +22,13 @@ class Dungeon {
 				var a = this.atLocation(i, j);
 				if (a === TILE_WALL) {
 					this.renderer.addWallBlock(i, j);
-				} else if (a === TILE_FLOOR) {
+				} else if (a === TILE_FLOOR || a === TILE_DOOR) {
 					this.renderer.addFloorSection(i, j);
 				} else if (a === TILE_INVISIBLE) {
 					this.renderer.addInvisibleWallBlock(i, j);
+				}
+				if (a === TILE_DOOR) {
+					this.renderer.addDoor(i, j);
 				}
 			}
 		}
@@ -75,6 +79,8 @@ class Dungeon {
 				this.renderer.animationFrames = 10;
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);
+			} else if (this.isDoor(target.x, target.z)) {
+				this.removeDoor(target.x, target.z);
 			}
 			this.entities.forEach((entity) => {
 				var action = entity.doTurn(this);
@@ -87,6 +93,13 @@ class Dungeon {
 				}
 			});
 		}
+	}
+
+	removeDoor(x, z) {
+		DungeonLayout.doors = DungeonLayout.doors.filter((door) => {
+			return !(door[0] == x && door[1] == z);
+		});
+		this.renderer.removeDoor(x, z);
 	}
 
 	moveEntity(x, z, id) {
@@ -125,7 +138,9 @@ class Dungeon {
 	}
 
 	atLocation(x, z) {
-		if (this.isWall(x, z) && !this.isHall(x, z)) {
+		if (this.isDoor(x, z)) {
+			return TILE_DOOR;
+		} else if (this.isWall(x, z) && !this.isHall(x, z)) {
 			return TILE_WALL;
 		} else if (this.isFloor(x, z) || this.isHall(x, z)) {
 			return TILE_FLOOR;
@@ -134,6 +149,14 @@ class Dungeon {
 		} else {
 			return null;
 		}
+	}
+
+	isDoor(x, z) {
+		var ret = false;
+		DungeonLayout.doors.map((door) => {
+			if (door[0] == x && door[1] == z) ret = true;
+		});
+		return ret;
 	}
 
 	isInvisibleWall(x, z) {
