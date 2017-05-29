@@ -71,14 +71,18 @@ class Dungeon {
 		if (!this.renderer.isAnimating()) {
 			var entity = this.entityAtPosition(target.x, target.z);
 			if (entity) {
-				this.doCombat(entity);
+				this.doCombat(this.playerCharacter, entity);
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);
 			}
 			this.entities.forEach((entity) => {
-				var action = entity.doTurn();
+				var action = entity.doTurn(this);
 				if (action) {
-					this.moveEntity(action[0], action[1], entity.id);
+					if (action[0] == "move") {
+						this.moveEntity(action[1], action[2], entity.id);
+					} else if (action[0] == "attack") {
+						this.doCombat(entity, this.playerCharacter);
+					}
 				}
 			});
 		}
@@ -96,11 +100,11 @@ class Dungeon {
 		}
 	}
 
-	doCombat(entity) {
-		this.playerCharacter.currentHealth -= 1;
-		entity.currentHealth -= 5;
-		if (entity.currentHealth <= 0) {
-			this.kill(entity);
+	doCombat(attacker, defender) {
+		defender.currentHealth -= attacker.attack;
+		if (defender.currentHealth <= 0) {
+			this.kill(defender);
+
 		}
 		this.renderer.updateHUD({
 			currentHealth: this.playerCharacter.currentHealth,

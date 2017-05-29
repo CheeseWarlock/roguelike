@@ -3,18 +3,37 @@ var Character = require("./Character");
 class Bat extends Character {
 	constructor(motionCallback) {
 		super();
+		this.attack = 1;
 	}
 
-	doTurn() {
-		var rand = Math.random();
-		if (rand > 0.75) {
-			return [0, 1];
-		} else if (rand > 0.5) {
-			return [0, -1];
-		} else if (rand > 0.25) {
-			return [-1, 0];
+	doTurn(dungeon) {
+		if (this.currentHealth < 10) {
+			const xdiff = this.x - dungeon.playerCharacter.x;
+			const zdiff = this.z - dungeon.playerCharacter.z;
+			if (Math.abs(xdiff) + Math.abs(zdiff) == 1) {
+				return ["attack"];
+			} else {
+				if (this.x > dungeon.playerCharacter.x) {
+					return ["move", -1, 0];
+				} else if (this.x < dungeon.playerCharacter.x) {
+					return ["move", 1, 0];
+				} else if (this.z > dungeon.playerCharacter.z) {
+					return ["move", 0, -1];
+				} else {
+					return ["move", 0, 1];
+				}
+			}
 		} else {
-			return [1, 0];
+			var rand = Math.random();
+			if (rand > 0.75) {
+				return ["move", 0, 1];
+			} else if (rand > 0.5) {
+				return ["move", 0, -1];
+			} else if (rand > 0.25) {
+				return ["move", -1, 0];
+			} else {
+				return ["move", 1, 0];
+			}
 		}
 	}
 }
