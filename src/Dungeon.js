@@ -102,9 +102,9 @@ class Dungeon {
 
 	doCombat(attacker, defender) {
 		defender.currentHealth -= attacker.attack;
+		this.renderer.updateActor(defender);
 		if (defender.currentHealth <= 0) {
 			this.kill(defender);
-
 		}
 		this.renderer.updateHUD({
 			currentHealth: this.playerCharacter.currentHealth,

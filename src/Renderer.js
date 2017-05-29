@@ -110,10 +110,30 @@ class Renderer {
 
 	addActor(entity) {
 		var actorMesh = entity.getMesh();
-		this.actors[entity.id] = actorMesh;
-		this.scene.add(actorMesh);
-		actorMesh.position.set(entity.x * 100 - 350, 50, entity.z * 100 - 250);
-		this.actorPosition = [entity.x, entity.z];
+		const healthBar = this.makeHealthBar(100 * entity.currentHealth / entity.maxHealth, actorMesh);
+		const joined = new THREE.Object3D();
+		joined.add(actorMesh);
+		joined.add(healthBar);
+		this.actors[entity.id] = joined;
+		this.scene.add(joined);
+		joined.position.set(entity.x * 100 - 350, 50, entity.z * 100 - 250);
+	}
+
+	makeHealthBar(percent, target) {
+		const fullHealth = new THREE.Mesh(new THREE.BoxGeometry(percent, 10, 10), new THREE.MeshBasicMaterial({color: 0xff0000}));
+		const emptyHealth = new THREE.Mesh(new THREE.BoxGeometry((100 - percent), 10, 10), new THREE.MeshBasicMaterial({color: 0x000000}));
+		fullHealth.position.x = -50 + percent/2;
+		emptyHealth.position.x = 50 - (100-percent)/2;
+		const healthBar = new THREE.Object3D();
+		healthBar.add(fullHealth);
+		healthBar.add(emptyHealth);
+		healthBar.position.set(target.position.x, target.position.y + 80, target.position.z);
+		return healthBar;
+	}
+
+	updateActor(entity) {
+		this.removeActor(entity.id);
+		this.addActor(entity);
 	}
 
 	removeActor(id) {
