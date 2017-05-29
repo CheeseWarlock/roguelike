@@ -3,6 +3,7 @@ class Character {
 		this.maxHealth = 10;
 		this.currentHealth = this.maxHealth;
 		this.attack = 5;
+		this.name = "Character";
 	}
 
 	getMesh() {

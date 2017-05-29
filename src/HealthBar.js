@@ -1,10 +1,10 @@
 class HealthBar {
 	constructor(percent) {
 		this.fullHealth = new THREE.Mesh(
-			new THREE.BoxGeometry(percent, 10, 10), new THREE.MeshBasicMaterial({color: 0xff0000})
+			new THREE.BoxGeometry(percent, 10, 10), new THREE.MeshBasicMaterial({color: 0xff0000, transparent: true, opacity: 0.7})
 		);
 		this.emptyHealth = new THREE.Mesh(
-			new THREE.BoxGeometry((100 - percent), 10, 10), new THREE.MeshBasicMaterial({color: 0x000000})
+			new THREE.BoxGeometry((100 - percent), 10, 10), new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.7})
 		);
 		this.fullHealth.position.x = -50 + percent/2;
 		this.emptyHealth.position.x = 50 - (100-percent)/2;

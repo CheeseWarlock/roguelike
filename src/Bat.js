@@ -4,6 +4,7 @@ class Bat extends Character {
 	constructor() {
 		super();
 		this.attack = 1;
+		this.name = "Small Bat";
 	}
 
 	getMesh() {

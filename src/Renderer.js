@@ -11,18 +11,27 @@ class Renderer {
 	}
 
 	setupHUD() {
-		var playerHealth = document.createElement("h1");
-		var playerMana = document.createElement("h1");
+		const playerHealth = document.createElement("h1");
+		const playerMana = document.createElement("h1");
 		playerHealth.id = "player-health";
 		playerMana.id = "player-mana";
-		var hud = document.getElementById("hud-container");
+		const hud = document.getElementById("hud-container");
 		hud.appendChild(playerHealth);
 		hud.appendChild(playerMana);
+		this.log("Welcome to the game!");
 	}
 
 	updateHUD(stats) {
 		document.getElementById("player-health").textContent = "HP: " + stats.currentHealth + "/" + stats.maxHealth;
-		document.getElementById("player-mana").textContent = "MP: Coming soon!";		
+		document.getElementById("player-mana").textContent = "MP: Coming soon!";
+	}
+
+	log(text) {
+		const combatLog = document.getElementById("combat-log");
+		const welcomeMessage = document.createElement("p");
+		welcomeMessage.textContent = text;
+		combatLog.appendChild(welcomeMessage);
+		combatLog.scrollTop = combatLog.scrollHeight;
 	}
 
 	nextFrame() {

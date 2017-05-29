@@ -72,6 +72,7 @@ class Dungeon {
 			var entity = this.entityAtPosition(target.x, target.z);
 			if (entity) {
 				this.doCombat(this.playerCharacter, entity);
+				this.renderer.animationFrames = 10;
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);
 			}
@@ -102,9 +103,11 @@ class Dungeon {
 
 	doCombat(attacker, defender) {
 		defender.currentHealth -= attacker.attack;
+		this.renderer.log(`${ attacker.name } attacked ${ defender.name } for ${ attacker.attack } damage!`);
 		this.renderer.updateActor(defender);
 		if (defender.currentHealth <= 0) {
 			this.kill(defender);
+			this.renderer.log(`${ defender.name } was defeated!`);
 		}
 		this.renderer.updateHUD({
 			currentHealth: this.playerCharacter.currentHealth,

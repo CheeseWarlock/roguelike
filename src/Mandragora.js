@@ -4,6 +4,7 @@ class Mandragora extends Character {
 	constructor() {
 		super();
 		this.attack = 2;
+		this.name = "Mandragora";
 	}
 
 	getMesh() {
