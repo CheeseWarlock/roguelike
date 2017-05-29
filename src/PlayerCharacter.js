@@ -1,6 +1,5 @@
 var Controller = require("./Controller");
 var Character = require("./Character");
-var TextureManager = require("./TextureManager");
 
 class PlayerCharacter extends Character {
 	constructor(motionCallback) {

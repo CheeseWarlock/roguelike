@@ -1,7 +1,7 @@
 var Character = require("./Character");
 
 class Bat extends Character {
-	constructor(motionCallback) {
+	constructor() {
 		super();
 		this.attack = 1;
 	}

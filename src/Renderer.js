@@ -70,10 +70,10 @@ class Renderer {
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    this.renderer.shadowMapBias = 0;
-    this.renderer.shadowMapDarkness = 0.5;
-    this.renderer.shadowMapWidth = 2048;
-    this.renderer.shadowMapHeight = 2048;
+		this.renderer.shadowMapBias = 0;
+		this.renderer.shadowMapDarkness = 0.5;
+		this.renderer.shadowMapWidth = 2048;
+		this.renderer.shadowMapHeight = 2048;
 
 		document.getElementById("game-container").appendChild(this.renderer.domElement);
 		this.nextFrame();
@@ -93,7 +93,7 @@ class Renderer {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
 		var wallSideMaterial = TextureManager.loadedMaterials["wall"];
 		var wallTopMaterial = TextureManager.loadedMaterials["walltop"];
-		var wallMesh = new THREE.Mesh(wall, new THREE.MeshFaceMaterial([wallSideMaterial,wallSideMaterial,wallTopMaterial,wallSideMaterial,wallSideMaterial,wallSideMaterial]));
+		var wallMesh = new THREE.Mesh(wall, new THREE.MeshFaceMaterial([wallSideMaterial, wallSideMaterial, wallTopMaterial, wallSideMaterial, wallSideMaterial, wallSideMaterial]));
 		wallMesh.castShadow = true;
 		wallMesh.receiveShadow = true;
 		this.scene.add(wallMesh);
@@ -102,7 +102,7 @@ class Renderer {
 
 	addInvisibleWallBlock(x, z) {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
-		var wallMesh = new THREE.Mesh(wall, new THREE.MeshBasicMaterial( { transparent: true, opacity: 0, side: THREE.BackSide } ));
+		var wallMesh = new THREE.Mesh(wall, new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, side: THREE.BackSide }));
 		wallMesh.castShadow = true;
 		this.scene.add(wallMesh);
 		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
@@ -132,7 +132,7 @@ class Renderer {
 	}
 
 	updateActor(entity) {
-		const actor = this.actors[entity.id]
+		const actor = this.actors[entity.id];
 		const healthBar = this.makeHealthBar(100 * entity.currentHealth / entity.maxHealth, actor.children[0]);
 		actor.remove(actor.children[1]);
 		actor.add(healthBar);

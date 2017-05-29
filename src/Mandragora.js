@@ -1,7 +1,7 @@
 var Character = require("./Character");
 
 class Mandragora extends Character {
-	constructor(motionCallback) {
+	constructor() {
 		super();
 		this.attack = 2;
 	}
