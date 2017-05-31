@@ -90,16 +90,22 @@ class Renderer {
 	}
 
 	addFloorSection(x, z, h) {
+		const offset = z == 1 ? (x == -1 ? 25 : (x == -2 ? 75: 0)) : 0;
 		var floor = new THREE.PlaneGeometry(100, 100);
 		var floorMaterial = TextureManager.loadedMaterials["tile"];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
 		floorMesh.rotation.x = Math.PI / 2;
-		floorMesh.position.set(x * 100 - 350, h, z * 100 - 250);
+		floorMesh.position.set(x * 100 - 350, h + offset, z * 100 - 250);
 		floorMesh.receiveShadow = true;
 
-		// var matrix = new THREE.Matrix4();
-		// matrix.set(1, 0, 0, 0, 0, 1, 0, 0, -1 /*x*/, 0 /*z*/, 1, 0, 0, 0, 0, 1);
-		// floor.applyMatrix( matrix );
+		const xTilt = ((x == -1 || x == -2) && z == 1) ? 0.5 : 0;
+		const zTilt = 0;
+
+		if (xTilt || zTilt) {
+			var matrix = new THREE.Matrix4();
+			matrix.set(1, 0, 0, 0, 0, 1, 0, 0, xTilt, zTilt, 1, 0, 0, 0, 0, 1);
+			floor.applyMatrix(matrix);
+		}
 		this.scene.add(floorMesh);
 	}
 
@@ -130,7 +136,7 @@ class Renderer {
 		if (!entity.isDoor) joined.add(healthBar);
 		this.actors[entity.id] = joined;
 		this.scene.add(joined);
-		joined.position.set(entity.x * 100 - 350, 50, entity.z * 100 - 250);
+		joined.position.set(entity.x * 100 - 350, 50 + entity.h, entity.z * 100 - 250);
 	}
 
 	makeHealthBar(percent, target) {

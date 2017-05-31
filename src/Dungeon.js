@@ -19,7 +19,7 @@ class Dungeon {
 
 	populate() {
 		this.playerCharacter = new PlayerCharacter((x, z, id) => this.handlePlayerAction(x, z, id));
-		this.addEntity(2, 2, 0, this.playerCharacter);
+		this.addEntity(2, 2, 0, 0, this.playerCharacter);
 
 		this.reveal(2, 2);
 
@@ -56,21 +56,22 @@ class Dungeon {
 					}
 					const entity = DungeonLayout.entityAtLocation(i, j);
 					if (entity) {
-						this.addEntity(i, j, this.idx++, entity);
+						this.addEntity(i, j, h, this.idx++, entity);
 					}
 					if (DungeonLayout.isDoor(i, j)) {
-						this.addEntity(i, j, this.idx++, new Door());
+						this.addEntity(i, j, h, this.idx++, new Door());
 					}
 				}
 			}
 		}
 	}
 
-	addEntity(x, z, id, character) {
+	addEntity(x, z, h, id, character) {
 		var pc = character;
 		pc.id = id;
 		pc.x = x;
 		pc.z = z;
+		pc.h = h;
 		this.entities.set(id, pc);
 		this.renderer.addActor(pc);
 	}
