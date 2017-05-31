@@ -34,19 +34,17 @@ class Dungeon {
 	reveal(x, z) {
 		let xMin = x;
 		let xMax = x;
-		while (this.atLocation(xMin, z) === TILE_FLOOR) xMin--;
-		while (this.atLocation(xMax, z) === TILE_FLOOR) xMax++;
+		while (DungeonLayout.atLocation(xMin, z) === TILE_FLOOR) xMin--;
+		while (DungeonLayout.atLocation(xMax, z) === TILE_FLOOR) xMax++;
 
 		let zMin = z;
 		let zMax = z;
-		while (this.atLocation(x, zMin) === TILE_FLOOR) zMin--;
-		while (this.atLocation(x, zMax) === TILE_FLOOR) zMax++;
+		while (DungeonLayout.atLocation(x, zMin) === TILE_FLOOR) zMin--;
+		while (DungeonLayout.atLocation(x, zMax) === TILE_FLOOR) zMax++;
 
-		//for (var i=0;i<DungeonLayout.size[0];i++) {
-		//	for (var j=0;j<DungeonLayout.size[1];j++) {
 		for (var i=xMin;i<=xMax;i++) {
 			for (var j=zMin;j<=zMax;j++) {
-				var a = this.atLocation(i, j);
+				var a = DungeonLayout.atLocation(i, j);
 				if (a === TILE_WALL) {
 					this.renderer.addWallBlock(i, j);
 				} else if (a === TILE_FLOOR || a === TILE_DOOR) {
@@ -79,7 +77,7 @@ class Dungeon {
 	}
 
 	spaceIsMoveable(x, z) {
-		return this.atLocation(x, z) == TILE_FLOOR && !this.entityAtPosition(x, z);
+		return DungeonLayout.atLocation(x, z) == TILE_FLOOR && !this.entityAtPosition(x, z);
 	}
 
 	handlePlayerAction(x, z, id) {
@@ -94,7 +92,7 @@ class Dungeon {
 				this.renderer.animationFrames = 10;
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);
-			} else if (this.isDoor(target.x, target.z)) {
+			} else if (DungeonLayout.isDoor(target.x, target.z)) {
 				this.removeDoor(target.x, target.z);
 			}
 			this.entities.forEach((entity) => {
@@ -148,82 +146,12 @@ class Dungeon {
 		this.entities.delete(entity.id);
 		this.renderer.removeActor(entity.id);
 	}
-
-	rooms() {
-		return DungeonLayout.rooms;
-	}
-
-	atLocation(x, z) {
-		if (this.isDoor(x, z)) {
-			return TILE_DOOR;
-		} else if (this.isWall(x, z) && !this.isHall(x, z)) {
-			return TILE_WALL;
-		} else if (this.isFloor(x, z) || this.isHall(x, z)) {
-			return TILE_FLOOR;
-		} else if (this.isInvisibleWall(x, z)) {
-			return TILE_INVISIBLE;
-		} else {
-			return null;
-		}
-	}
-
-	isDoor(x, z) {
-		var ret = false;
-		DungeonLayout.doors.map((door) => {
-			if (door[0] == x && door[1] == z) ret = true;
-		});
-		return ret;
-	}
-
-	isInvisibleWall(x, z) {
-		var ret = false;
-		DungeonLayout.halls.map((hallway) => {
-			if (hallway[0] == hallway[2]) {
-				if (z > hallway[1] && z < hallway[3] && (x == hallway[0] + 1 || x == hallway[0] - 1)) ret = true;
-			} else {
-				if (x > hallway[0] && x < hallway[2] && (z == hallway[1] + 1 || z == hallway[1] - 1)) ret = true;
-			}
-		});
-		return ret;
-	}
-
-	isHall(x, z) {
-		var ret = false;
-		DungeonLayout.halls.map((hallway) => {
-			if (hallway[0] == hallway[2]) {
-				if (z >= hallway[1] && z <= hallway[3] && x == hallway[0]) ret = true;
-			} else {
-				if (x >= hallway[0] && x <= hallway[2] && z == hallway[1]) ret = true;
-			}
-		});
-		return ret;
-	}
-
-	isFloor(x, z) {
-		var floor = false;
-		DungeonLayout.rooms.map((room) => {
-			if (x > room[0] && x < room[2] && z > room[1] && z < room[3]) {
-				floor = true;
-			}
-		});
-		return floor;
-	}
-
-	isWall(x, z) {
-		var wall = false;
-		DungeonLayout.rooms.map((room) => {
-			if (((x == room[0] || x == room[2]) && z >= room[1] && z <= room[3]) ||
-					((z == room[1] || z == room[3]) && x >= room[0] && x <= room[2])) {
-				wall = true;
-			}
-		});
-		return wall;
-	}
 }
 
 module.exports = {
 	TILE_WALL: TILE_WALL,
 	TILE_FLOOR: TILE_FLOOR,
 	TILE_INVISIBLE: TILE_INVISIBLE,
+	TILE_DOOR: TILE_DOOR,
 	Dungeon: Dungeon
 };
