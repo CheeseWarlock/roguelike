@@ -96,8 +96,10 @@ class Dungeon {
 			if (entity) {
 				if (entity.isDoor) {
 					this.reveal(target.x * 2 - this.playerCharacter.x, target.z * 2 - this.playerCharacter.z);
+					this.kill(entity);
+				} else {
+					this.doCombat(this.playerCharacter, entity);
 				}
-				this.doCombat(this.playerCharacter, entity);
 				this.renderer.animationFrames = 10;
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);

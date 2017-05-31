@@ -123,7 +123,7 @@ class Renderer {
 		const healthBar = this.makeHealthBar(100 * entity.currentHealth / entity.maxHealth, actorMesh);
 		const joined = new THREE.Object3D();
 		joined.add(actorMesh);
-		joined.add(healthBar);
+		if (!entity.isDoor) joined.add(healthBar);
 		this.actors[entity.id] = joined;
 		this.scene.add(joined);
 		joined.position.set(entity.x * 100 - 350, 50, entity.z * 100 - 250);
