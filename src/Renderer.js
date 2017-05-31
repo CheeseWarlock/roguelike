@@ -89,17 +89,21 @@ class Renderer {
 		this.nextFrame();
 	}
 
-	addFloorSection(x, z) {
+	addFloorSection(x, z, h) {
 		var floor = new THREE.PlaneGeometry(100, 100);
 		var floorMaterial = TextureManager.loadedMaterials["tile"];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
 		floorMesh.rotation.x = Math.PI / 2;
-		floorMesh.position.set(x * 100 - 350, 0, z * 100 - 250);
+		floorMesh.position.set(x * 100 - 350, h, z * 100 - 250);
 		floorMesh.receiveShadow = true;
+
+		// var matrix = new THREE.Matrix4();
+		// matrix.set(1, 0, 0, 0, 0, 1, 0, 0, -1 /*x*/, 0 /*z*/, 1, 0, 0, 0, 0, 1);
+		// floor.applyMatrix( matrix );
 		this.scene.add(floorMesh);
 	}
 
-	addWallBlock(x, z) {
+	addWallBlock(x, z, h) {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
 		var wallSideMaterial = TextureManager.loadedMaterials["wall"];
 		var wallTopMaterial = TextureManager.loadedMaterials["walltop"];
@@ -107,15 +111,15 @@ class Renderer {
 		wallMesh.castShadow = true;
 		wallMesh.receiveShadow = true;
 		this.scene.add(wallMesh);
-		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
+		wallMesh.position.set(x * 100 - 350, 50 + h, z * 100 - 250);
 	}
 
-	addInvisibleWallBlock(x, z) {
+	addInvisibleWallBlock(x, z, h) {
 		var wall = new THREE.BoxGeometry(100, 100, 100);
 		var wallMesh = new THREE.Mesh(wall, new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, side: THREE.BackSide }));
 		wallMesh.castShadow = true;
 		this.scene.add(wallMesh);
-		wallMesh.position.set(x * 100 - 350, 50, z * 100 - 250);
+		wallMesh.position.set(x * 100 - 350, 50 + h, z * 100 - 250);
 	}
 
 	addActor(entity) {

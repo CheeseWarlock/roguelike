@@ -45,13 +45,14 @@ class Dungeon {
 				if (!this.revealedSquares[i]) this.revealedSquares[i] = [];
 				if (!this.revealedSquares[i][j]) {
 					this.revealedSquares[i][j] = true;
+					const h = DungeonLayout.height(i, j);
 					var a = DungeonLayout.atLocation(i, j);
 					if (a === TILE_WALL) {
-						this.renderer.addWallBlock(i, j);
+						this.renderer.addWallBlock(i, j, h);
 					} else if (a === TILE_FLOOR || a === TILE_DOOR) {
-						this.renderer.addFloorSection(i, j);
+						this.renderer.addFloorSection(i, j, h);
 					} else if (a === TILE_INVISIBLE) {
-						this.renderer.addInvisibleWallBlock(i, j);
+						this.renderer.addInvisibleWallBlock(i, j, h);
 					}
 					const entity = DungeonLayout.entityAtLocation(i, j);
 					if (entity) {

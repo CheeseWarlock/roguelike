@@ -9,9 +9,9 @@ const TILE_DOOR = 3;
 class DungeonLayout {
 	constructor() {
 		this.size = [20, 20];
-		this.rooms = [[0, 0, 3, 8], [6, 3, 14, 14], [0, 10, 4, 13]];
-		this.halls = [[3, 4, 6, 4], [4, 12, 6, 12], [1, 8, 1, 10]];
-		this.doors = [[3, 4], [6, 4], [1, 8], [1, 10], [4, 12], [6, 12]];
+		this.rooms = [[0, 0, 3, 8, 0], [6, 3, 14, 14, 0], [0, 10, 4, 13, 0], [-6, -4, -3, 2, 50]];
+		this.halls = [[3, 4, 6, 4], [4, 12, 6, 12], [1, 8, 1, 10], [-3, 1, 0, 1]];
+		this.doors = [[3, 4], [6, 4], [1, 8], [1, 10], [4, 12], [6, 12], [0, 1], [-3, 1]];
 		this.entities = [[4, 4, new Mandragora()], [1, 11, new Bat()], [2, 11, new Bat()]];
 	}
 
@@ -65,6 +65,16 @@ class DungeonLayout {
 			}
 		});
 		return ret;
+	}
+
+	height(x, z) {
+		var height = 0;
+		this.rooms.map((room) => {
+			if (x >= room[0] && x <= room[2] && z >= room[1] && z <= room[3]) {
+				height = room[4];
+			}
+		});
+		return height;
 	}
 
 	isFloor(x, z) {
