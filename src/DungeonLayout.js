@@ -1,3 +1,6 @@
+var Mandragora = require("./Mandragora");
+var Bat = require("./Bat");
+
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
 const TILE_INVISIBLE = 2;
@@ -9,6 +12,15 @@ class DungeonLayout {
 		this.rooms = [[0, 0, 3, 8], [6, 3, 14, 14], [0, 10, 4, 13]];
 		this.halls = [[3, 4, 6, 4], [4, 12, 6, 12], [1, 8, 1, 10]];
 		this.doors = [[3, 4], [6, 4], [1, 8], [1, 10], [4, 12], [6, 12]];
+		this.entities = [[4, 4, new Mandragora()], [1, 11, new Bat()], [2, 11, new Bat()]];
+	}
+
+	entityAtLocation(x, z) {
+		var ret = false;
+		this.entities.map((entity) => {
+			if (entity[0] == x && entity[1] == z) ret = entity[2];
+		});
+		return ret;
 	}
 
 	atLocation(x, z) {

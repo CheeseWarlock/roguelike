@@ -1,8 +1,6 @@
 var DungeonLayout = require("./DungeonLayout");
 var PlayerCharacter = require("./PlayerCharacter");
-var Mandragora = require("./Mandragora");
 var Door = require("./Door");
-var Bat = require("./Bat");
 
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
@@ -25,9 +23,6 @@ class Dungeon {
 
 		this.reveal(2, 2);
 
-		this.addEntity(4, 4, 1, new Mandragora());
-		this.addEntity(1, 11, 4, new Bat());
-		this.addEntity(2, 11, 5, new Bat());
 		this.renderer.updateHUD({
 			currentHealth: 10,
 			maxHealth: 10
@@ -57,6 +52,10 @@ class Dungeon {
 						this.renderer.addFloorSection(i, j);
 					} else if (a === TILE_INVISIBLE) {
 						this.renderer.addInvisibleWallBlock(i, j);
+					}
+					const entity = DungeonLayout.entityAtLocation(i, j);
+					if (entity) {
+						this.addEntity(i, j, this.idx++, entity);
 					}
 					if (DungeonLayout.isDoor(i, j)) {
 						this.addEntity(i, j, this.idx++, new Door());
