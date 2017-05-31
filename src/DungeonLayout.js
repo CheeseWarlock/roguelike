@@ -12,9 +12,7 @@ class DungeonLayout {
 	}
 
 	atLocation(x, z) {
-		if (this.isDoor(x, z)) {
-			return TILE_DOOR;
-		} else if (this.isWall(x, z) && !this.isHall(x, z)) {
+		if (this.isWall(x, z) && !this.isHall(x, z)) {
 			return TILE_WALL;
 		} else if (this.isFloor(x, z) || this.isHall(x, z)) {
 			return TILE_FLOOR;

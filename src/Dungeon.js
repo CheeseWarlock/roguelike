@@ -1,6 +1,7 @@
 var DungeonLayout = require("./DungeonLayout");
 var PlayerCharacter = require("./PlayerCharacter");
 var Mandragora = require("./Mandragora");
+var Door = require("./Door");
 var Bat = require("./Bat");
 
 const TILE_WALL = 0;
@@ -14,6 +15,8 @@ class Dungeon {
 			loadCallback: () => this.populate()
 		});
 		this.entities = new Map();
+		this.idx = 10;
+		this.revealedSquares = [];
 	}
 
 	populate() {
@@ -34,26 +37,30 @@ class Dungeon {
 	reveal(x, z) {
 		let xMin = x;
 		let xMax = x;
-		while (DungeonLayout.atLocation(xMin, z) === TILE_FLOOR) xMin--;
-		while (DungeonLayout.atLocation(xMax, z) === TILE_FLOOR) xMax++;
+		while (DungeonLayout.atLocation(xMin, z) === TILE_FLOOR && !DungeonLayout.isDoor(xMin, z)) xMin--;
+		while (DungeonLayout.atLocation(xMax, z) === TILE_FLOOR && !DungeonLayout.isDoor(xMax, z)) xMax++;
 
 		let zMin = z;
 		let zMax = z;
-		while (DungeonLayout.atLocation(x, zMin) === TILE_FLOOR) zMin--;
-		while (DungeonLayout.atLocation(x, zMax) === TILE_FLOOR) zMax++;
+		while (DungeonLayout.atLocation(x, zMin) === TILE_FLOOR && !DungeonLayout.isDoor(x, zMin)) zMin--;
+		while (DungeonLayout.atLocation(x, zMax) === TILE_FLOOR && !DungeonLayout.isDoor(x, zMax)) zMax++;
 
 		for (var i=xMin;i<=xMax;i++) {
 			for (var j=zMin;j<=zMax;j++) {
-				var a = DungeonLayout.atLocation(i, j);
-				if (a === TILE_WALL) {
-					this.renderer.addWallBlock(i, j);
-				} else if (a === TILE_FLOOR || a === TILE_DOOR) {
-					this.renderer.addFloorSection(i, j);
-				} else if (a === TILE_INVISIBLE) {
-					this.renderer.addInvisibleWallBlock(i, j);
-				}
-				if (a === TILE_DOOR) {
-					this.renderer.addDoor(i, j);
+				if (!this.revealedSquares[i]) this.revealedSquares[i] = [];
+				if (!this.revealedSquares[i][j]) {
+					this.revealedSquares[i][j] = true;
+					var a = DungeonLayout.atLocation(i, j);
+					if (a === TILE_WALL) {
+						this.renderer.addWallBlock(i, j);
+					} else if (a === TILE_FLOOR || a === TILE_DOOR) {
+						this.renderer.addFloorSection(i, j);
+					} else if (a === TILE_INVISIBLE) {
+						this.renderer.addInvisibleWallBlock(i, j);
+					}
+					if (DungeonLayout.isDoor(i, j)) {
+						this.addEntity(i, j, this.idx++, new Door());
+					}
 				}
 			}
 		}
@@ -88,12 +95,13 @@ class Dungeon {
 		if (!this.renderer.isAnimating()) {
 			var entity = this.entityAtPosition(target.x, target.z);
 			if (entity) {
+				if (entity.isDoor) {
+					this.reveal(target.x * 2 - this.playerCharacter.x, target.z * 2 - this.playerCharacter.z);
+				}
 				this.doCombat(this.playerCharacter, entity);
 				this.renderer.animationFrames = 10;
 			} else if (this.spaceIsMoveable(target.x, target.z)) {
 				this.moveEntity(x, z, id);
-			} else if (DungeonLayout.isDoor(target.x, target.z)) {
-				this.removeDoor(target.x, target.z);
 			}
 			this.entities.forEach((entity) => {
 				var action = entity.doTurn(this);
