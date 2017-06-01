@@ -40,6 +40,7 @@ class Renderer {
 		if (this.animationFrames > 0) {
 			this.animations.map((animation) => {
 				this.actors[animation.id].position.x += animation.x * 10;
+				this.actors[animation.id].position.y += animation.h / 10;
 				this.actors[animation.id].position.z += animation.z * 10;
 				if (animation.id == 0) {
 					this.camera.position.x += animation.x * 10;
@@ -90,12 +91,11 @@ class Renderer {
 	}
 
 	addFloorSection(x, z, h) {
-		const offset = z == 1 ? (x == -1 ? 25 : (x == -2 ? 75: 0)) : 0;
 		var floor = new THREE.PlaneGeometry(100, 100);
 		var floorMaterial = TextureManager.loadedMaterials["tile"];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
 		floorMesh.rotation.x = Math.PI / 2;
-		floorMesh.position.set(x * 100 - 350, h + offset, z * 100 - 250);
+		floorMesh.position.set(x * 100 - 350, h, z * 100 - 250);
 		floorMesh.receiveShadow = true;
 
 		const xTilt = ((x == -1 || x == -2) && z == 1) ? 0.5 : 0;
@@ -156,10 +156,11 @@ class Renderer {
 		this.scene.remove(this.actors[id]);
 	}
 
-	moveCharacter(x, z, id) {
+	moveCharacter(x, z, h, id) {
 		this.animations.push({
 			x: x,
 			z: z,
+			h: h,
 			id: id
 		});
 	}

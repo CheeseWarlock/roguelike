@@ -132,10 +132,11 @@ class Dungeon {
 			x: this.entities.get(id).x + x,
 			z: this.entities.get(id).z + z
 		};
+		const h = DungeonLayout.height(target.x, target.z) - DungeonLayout.height(this.entities.get(id).x, this.entities.get(id).z);
 		if (this.spaceIsMoveable(target.x, target.z)) {
 			this.entities.get(id).x += x;
 			this.entities.get(id).z += z;
-			this.renderer.moveCharacter(x, z, id);
+			this.renderer.moveCharacter(x, z, h, id);
 		}
 	}
 
