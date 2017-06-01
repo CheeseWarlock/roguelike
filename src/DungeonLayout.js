@@ -9,8 +9,8 @@ const TILE_DOOR = 3;
 class DungeonLayout {
 	constructor() {
 		this.size = [20, 20];
-		this.rooms = [[0, 0, 3, 8, 0], [6, 3, 14, 14, 0], [0, 10, 4, 13, 0], [-6, -4, -3, 2, 100], [0, -10, 5, -1, 200]];
-		this.halls = [[3, 4, 6, 4, 0, 0], [4, 12, 6, 12, 0, 0], [1, 8, 1, 10, 0, 0], [-3, 1, 0, 1, 50, 0], [-3, -2, 0, -2, 50, 100]];
+		this.rooms = [[0, 0, 3, 8, 0], [6, 3, 14, 14, 0], [0, 10, 4, 13, -50], [-6, -4, -3, 2, 100], [0, -10, 5, -1, 200]];
+		this.halls = [[3, 4, 6, 4, 0, 0], [4, 12, 6, 12, -50, 0], [1, 8, 1, 10, 0, -50], [-3, 1, 0, 1, 100, 0], [-3, -2, 0, -2, 100, 200]];
 		this.doors = [[3, 4], [6, 4], [1, 8], [1, 10], [4, 12], [6, 12], [0, 1], [-3, 1], [-3, -2], [0, -2]];
 		this.entities = [[4, 4, new Mandragora()], [1, 11, new Bat()], [2, 11, new Bat()]];
 	}
@@ -77,14 +77,16 @@ class DungeonLayout {
 		if (height === null) {
 			this.halls.map((hallway) => {
 				if (hallway[0] == hallway[2]) {
+					// x same: vertical hall
 					if (z >= hallway[1] && z <= hallway[3] && x == hallway[0]) {
-						const slope = (hallway[4] - hallway[5]) / (1 + (hallway[2] - hallway[0]));
-						height = hallway[5] + (hallway[0] - x - 1.5) * slope;
+						const slope = (hallway[4] - hallway[5]) / ((hallway[3] - hallway[1]) - 1);
+						height = hallway[4] + (z - hallway[1] - 1.5) * slope;
 					}
 				} else {
+					// z same: horiz hall
 					if (x >= hallway[0] && x <= hallway[2] && z == hallway[1]) {
-						const slope = (hallway[4] - hallway[5]) / (1 + (hallway[3] - hallway[1]));
-						height = hallway[5] + (hallway[1] - x - (hallway[5] < hallway[4] ? 1.5 : 0.5)) * slope;
+						const slope = (hallway[4] - hallway[5]) / ((hallway[2] - hallway[0]) - 1);
+						height = hallway[4] + (x - hallway[0] - 0.5) * -slope;
 					}
 				}
 			});
@@ -93,7 +95,6 @@ class DungeonLayout {
 	}
 
 	getTilt(x, z) {
-		// Returns [xTilt, zTilt]
 		var ret = [0, 0];
 		this.halls.map((hallway) => {
 			if (hallway[0] == hallway[2]) {
