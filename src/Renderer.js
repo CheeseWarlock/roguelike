@@ -23,7 +23,7 @@ class Renderer {
 
 	updateHUD(stats) {
 		document.getElementById("player-health").textContent = "HP: " + stats.currentHealth + "/" + stats.maxHealth;
-		document.getElementById("player-mana").textContent = "MP: Coming soon!";
+		document.getElementById("player-mana").textContent = "MP: 10/10";
 	}
 
 	log(text) {
@@ -46,6 +46,7 @@ class Renderer {
 					this.camera.position.x += animation.x * 10;
 					this.camera.position.z += animation.z * 10;
 					this.characterLight.position.x += animation.x * 10;
+					this.characterLight.position.y += animation.h / 10;
 					this.characterLight.position.z += animation.z * 10;
 				}
 			});
