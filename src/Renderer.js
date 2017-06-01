@@ -91,16 +91,13 @@ class Renderer {
 		this.nextFrame();
 	}
 
-	addFloorSection(x, z, h) {
+	addFloorSection(x, z, xTilt, zTilt, h) {
 		var floor = new THREE.PlaneGeometry(100, 100);
 		var floorMaterial = TextureManager.loadedMaterials["tile"];
 		var floorMesh = new THREE.Mesh(floor, floorMaterial);
 		floorMesh.rotation.x = Math.PI / 2;
 		floorMesh.position.set(x * 100 - 350, h, z * 100 - 250);
 		floorMesh.receiveShadow = true;
-
-		const xTilt = ((x == -1 || x == -2) && z == 1) ? 0.5 : 0;
-		const zTilt = 0;
 
 		if (xTilt || zTilt) {
 			var matrix = new THREE.Matrix4();

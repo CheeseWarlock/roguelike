@@ -84,12 +84,29 @@ class DungeonLayout {
 				} else {
 					if (x >= hallway[0] && x <= hallway[2] && z == hallway[1]) {
 						const slope = (hallway[4] - hallway[5]) / (1 + (hallway[3] - hallway[1]));
-						height = hallway[5] + (hallway[1] - x - 1.5) * slope;
+						height = hallway[5] + (hallway[1] - x - (hallway[5] < hallway[4] ? 1.5 : 0.5)) * slope;
 					}
 				}
 			});
 		}
 		return height;
+	}
+
+	getTilt(x, z) {
+		// Returns [xTilt, zTilt]
+		var ret = [0, 0];
+		this.halls.map((hallway) => {
+			if (hallway[0] == hallway[2]) {
+				if (z > hallway[1] && z < hallway[3] && x == hallway[0]) {
+					ret = [0, (hallway[5] < hallway[4] ? 0.5 : (hallway[5] == hallway[4] ? 0 : -0.5))];
+				}
+			} else {
+				if (x > hallway[0] && x < hallway[2] && z == hallway[1]) {
+					ret = [(hallway[5] < hallway[4] ? 0.5 : (hallway[5] == hallway[4] ? 0 : -0.5)), 0];
+				}
+			}
+		});
+		return ret;
 	}
 
 	isFloor(x, z) {

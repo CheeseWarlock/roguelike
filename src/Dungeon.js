@@ -50,7 +50,8 @@ class Dungeon {
 					if (a === TILE_WALL) {
 						this.renderer.addWallBlock(i, j, h);
 					} else if (a === TILE_FLOOR || a === TILE_DOOR) {
-						this.renderer.addFloorSection(i, j, h);
+						const t = DungeonLayout.getTilt(i, j);
+						this.renderer.addFloorSection(i, j, t[0], t[1], h);
 					} else if (a === TILE_INVISIBLE) {
 						this.renderer.addInvisibleWallBlock(i, j, h);
 					}
