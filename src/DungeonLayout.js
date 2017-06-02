@@ -6,6 +6,36 @@ const TILE_FLOOR = 1;
 const TILE_INVISIBLE = 2;
 const TILE_DOOR = 3;
 
+class Room {
+	constructor(x1, z1, x2, z2, h) {
+		this.x1 = x1;
+		this.z1 = z1;
+		this.x2 = x2;
+		this.z2 = z2;
+		this.h = h;
+	}
+}
+
+class Hall {
+	constructor(x1, z1, x2, z2, h1, h2) {
+		this.x1 = x1;
+		this.z1 = z1;
+		this.x2 = x2;
+		this.z2 = z2;
+		this.h1 = h1;
+		this.h2 = h2;
+	}
+}
+
+class EntitySpawn {
+	constructor(x, z, h, entity) {
+		this.x = x;
+		this.z = z;
+		this.h = h;
+		this.entity = entity;
+	}
+}
+
 class DungeonLayout {
 	constructor() {
 		this.rooms = [[0, 0, 3, 8, 0], [6, 3, 14, 14, 0], [0, 10, 4, 13, -50], [-6, -4, -3, 2, 100], [0, -10, 5, -1, 200]];
@@ -15,11 +45,9 @@ class DungeonLayout {
 	}
 
 	entityAtLocation(x, z) {
-		var ret = false;
-		this.entities.map((entity) => {
-			if (entity[0] == x && entity[1] == z) ret = entity[3];
-		});
-		return ret;
+		for (const entity of this.entities) {
+			if (entity[0] == x && entity[1] == z) return entity[3];
+		}
 	}
 
 	atLocation(x, z) {
