@@ -8,17 +8,16 @@ const TILE_DOOR = 3;
 
 class DungeonLayout {
 	constructor() {
-		this.size = [20, 20];
 		this.rooms = [[0, 0, 3, 8, 0], [6, 3, 14, 14, 0], [0, 10, 4, 13, -50], [-6, -4, -3, 2, 100], [0, -10, 5, -1, 200]];
 		this.halls = [[3, 4, 6, 4, 0, 0], [4, 12, 6, 12, -50, 0], [1, 8, 1, 10, 0, -50], [-3, 1, 0, 1, 100, 0], [-3, -2, 0, -2, 100, 200]];
-		this.doors = [[3, 4], [6, 4], [1, 8], [1, 10], [4, 12], [6, 12], [0, 1], [-3, 1], [-3, -2], [0, -2]];
-		this.entities = [[4, 4, new Mandragora()], [1, 11, new Bat()], [2, 11, new Bat()]];
+		this.doors = [[3, 4, 0], [6, 4, 0], [1, 8, 0], [1, 10, -50], [4, 12, -50], [6, 12, 0], [0, 1, 0], [-3, 1, 100], [-3, -2, 100], [0, -2, 200]];
+		this.entities = [[4, 4, 0, new Mandragora()], [1, 11, -50, new Bat()], [2, 11, -50, new Bat()]];
 	}
 
 	entityAtLocation(x, z) {
 		var ret = false;
 		this.entities.map((entity) => {
-			if (entity[0] == x && entity[1] == z) ret = entity[2];
+			if (entity[0] == x && entity[1] == z) ret = entity[3];
 		});
 		return ret;
 	}
