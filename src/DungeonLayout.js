@@ -1,5 +1,6 @@
 var Mandragora = require("./Mandragora");
 var Bat = require("./Bat");
+var Door = require("./Door");
 
 const TILE_WALL = 0;
 const TILE_FLOOR = 1;
@@ -27,7 +28,7 @@ class Hall {
 	}
 }
 
-class EntitySpawn {
+class Spawn {
 	constructor(x, z, h, entity) {
 		this.x = x;
 		this.z = z;
@@ -44,13 +45,15 @@ class DungeonLayout {
 		this.halls = [
 			new Hall(3, 4, 6, 4, 0, 0), new Hall(4, 12, 6, 12, -50, 0), new Hall(1, 8, 1, 10, 0, -50), new Hall(-3, 1, 0, 1, 100, 0), new Hall(-3, -2, 0, -2, 100, 200) 
 		];
-		this.doors = [[3, 4, 0], [6, 4, 0], [1, 8, 0], [1, 10, -50], [4, 12, -50], [6, 12, 0], [0, 1, 0], [-3, 1, 100], [-3, -2, 100], [0, -2, 200]];
-		this.entities = [[4, 4, 0, new Mandragora()], [1, 11, -50, new Bat()], [2, 11, -50, new Bat()]];
+		this.spawns = [
+			new Spawn(4, 4, 0, new Mandragora()), new Spawn(1, 11, -50, new Bat()), new Spawn(2, 11, -50, new Bat()),
+			new Spawn(3, 4, 0, new Door()), new Spawn(6, 4, 0, new Door()), new Spawn(1, 8, 0, new Door()), new Spawn(1, 10, -50, new Door()), new Spawn(4, 12, -50, new Door()), new Spawn(6, 12, 0, new Door()), new Spawn(0, 1, 0, new Door()), new Spawn(-3, 1, 100, new Door()), new Spawn(-3, -2, 100, new Door()), new Spawn(0, -2, 200, new Door())
+		];
 	}
 
 	entityAtLocation(x, z) {
-		for (const entity of this.entities) {
-			if (entity[0] == x && entity[1] == z) return entity[3];
+		for (const spawn of this.spawns) {
+			if (spawn.x == x && spawn.z == z) return spawn.entity;
 		}
 	}
 
@@ -67,8 +70,8 @@ class DungeonLayout {
 	}
 
 	isDoor(x, z) {
-		for (const door of this.doors) {
-			if (door[0] == x && door[1] == z) return true;
+		for (const spawn of this.spawns) {
+			if (spawn.x == x && spawn.z == z) return spawn.entity.isDoor;
 		}
 		return false;
 	}
