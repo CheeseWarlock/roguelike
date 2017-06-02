@@ -39,15 +39,15 @@ class Renderer {
 		if (this.animations.length && !this.animationFrames) this.animationFrames = 10;
 		if (this.animationFrames > 0) {
 			this.animations.map((animation) => {
-				this.actors[animation.id].position.x += animation.x * 10;
-				this.actors[animation.id].position.y += animation.h / 10;
-				this.actors[animation.id].position.z += animation.z * 10;
+				this.actors[animation.id].position.x += animation.dx * 10;
+				this.actors[animation.id].position.y += animation.dh / 10;
+				this.actors[animation.id].position.z += animation.dz * 10;
 				if (animation.id == 0) {
-					this.camera.position.x += animation.x * 10;
-					this.camera.position.z += animation.z * 10;
-					this.characterLight.position.x += animation.x * 10;
-					this.characterLight.position.y += animation.h / 10;
-					this.characterLight.position.z += animation.z * 10;
+					this.camera.position.x += animation.dx * 10;
+					this.camera.position.z += animation.dz * 10;
+					this.characterLight.position.x += animation.dx * 10;
+					this.characterLight.position.y += animation.dh / 10;
+					this.characterLight.position.z += animation.dz * 10;
 				}
 			});
 			this.animationFrames -= 1;
@@ -154,11 +154,11 @@ class Renderer {
 		this.scene.remove(this.actors[id]);
 	}
 
-	moveCharacter(x, z, h, id) {
+	moveCharacter(dx, dz, dh, id) {
 		this.animations.push({
-			x: x,
-			z: z,
-			h: h,
+			dx: dx,
+			dz: dz,
+			dh: dh,
 			id: id
 		});
 	}

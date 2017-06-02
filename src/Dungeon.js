@@ -59,9 +59,6 @@ class Dungeon {
 					if (entity) {
 						this.addEntity(i, j, h, this.idx++, entity);
 					}
-					if (DungeonLayout.isDoor(i, j)) {
-						this.addEntity(i, j, h, this.idx++, new Door());
-					}
 				}
 			}
 		}
@@ -128,16 +125,16 @@ class Dungeon {
 		this.reveal(x * 2 - this.playerCharacter.x, z * 2 - this.playerCharacter.z);
 	}
 
-	moveEntity(x, z, id) {
+	moveEntity(dx, dz, id) {
 		var target = {
-			x: this.entities.get(id).x + x,
-			z: this.entities.get(id).z + z
+			x: this.entities.get(id).x + dx,
+			z: this.entities.get(id).z + dz
 		};
-		const h = DungeonLayout.height(target.x, target.z) - DungeonLayout.height(this.entities.get(id).x, this.entities.get(id).z);
+		const dh = DungeonLayout.height(target.x, target.z) - DungeonLayout.height(this.entities.get(id).x, this.entities.get(id).z);
 		if (this.spaceIsMoveable(target.x, target.z)) {
-			this.entities.get(id).x += x;
-			this.entities.get(id).z += z;
-			this.renderer.moveCharacter(x, z, h, id);
+			this.entities.get(id).x += dx;
+			this.entities.get(id).z += dz;
+			this.renderer.moveCharacter(dx, dz, dh, id);
 		}
 	}
 
