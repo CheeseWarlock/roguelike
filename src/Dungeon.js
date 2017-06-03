@@ -18,10 +18,12 @@ class Dungeon {
 	}
 
 	populate() {
-		this.playerCharacter = new DungeonLayout.playerSpawn.entity((x, z, id) => this.handlePlayerAction(x, z, id));
-		this.addEntity(DungeonLayout.playerSpawn.x, DungeonLayout.playerSpawn.z, DungeonLayout.playerSpawn.h, 0, this.playerCharacter);
+		const spawn = DungeonLayout.playerSpawn;
+		this.playerCharacter = new spawn.entity((x, z, id) => this.handlePlayerAction(x, z, id));
+		this.addEntity(spawn.x, spawn.z, spawn.h, 0, this.playerCharacter);
 
-		this.reveal(2, 2);
+		this.reveal(spawn.x, spawn.z);
+		this.renderer.addPlayerSupport(spawn.x, spawn.z, spawn.h);
 
 		this.renderer.updateHUD({
 			currentHealth: 10,

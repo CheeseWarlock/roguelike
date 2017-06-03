@@ -40,7 +40,7 @@ class Spawn {
 
 class DungeonLayout {
 	constructor() {
-		this.playerSpawn = new Spawn(2, 2, 0, PlayerCharacter);
+		this.playerSpawn = new Spawn(2, 6, 0, PlayerCharacter);
 		this.rooms = [
 			new Room(0, 0, 3, 8, 0), new Room(6, 3, 14, 14, 0), new Room(0, 10, 4, 13, -50), new Room(-6, -4, -3, 2, 100), new Room(0, -10, 5, -1, 200)
 		];

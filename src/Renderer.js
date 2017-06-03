@@ -62,19 +62,6 @@ class Renderer {
 		this.scene = new THREE.Scene();
 		this.scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 
-		this.characterLight = new THREE.PointLight(0xffddaa, 1, 1000, 1);
-		this.characterLight.position.set(-150, 20, -50);
-		this.characterLight.castShadow = true;
-		this.characterLight.shadow.mapSize.width = 2048;
-		this.characterLight.shadow.mapSize.height = 2048;
-		this.characterLight.shadow.camera.near = 0.5;
-		this.characterLight.shadow.camera.far = 5000;
-		this.scene.add(this.characterLight);
-
-		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-		this.camera.position.set(-150, 800, 250);
-		this.camera.lookAt(new THREE.Vector3(-150, 0, -150));
-
 		this.loadCallback();
 
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -89,6 +76,21 @@ class Renderer {
 
 		document.getElementById("game-container").appendChild(this.renderer.domElement);
 		this.nextFrame();
+	}
+
+	addPlayerSupport(x, z, h) {
+		this.characterLight = new THREE.PointLight(0xffddaa, 1, 1000, 1);
+		this.characterLight.position.set(x * 100 - 350, 20 + h, z * 100 - 250);
+		this.characterLight.castShadow = true;
+		this.characterLight.shadow.mapSize.width = 2048;
+		this.characterLight.shadow.mapSize.height = 2048;
+		this.characterLight.shadow.camera.near = 0.5;
+		this.characterLight.shadow.camera.far = 5000;
+		this.scene.add(this.characterLight);
+
+		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+		this.camera.position.set(x * 100 - 350, 800, z * 100 + 50);
+		this.camera.lookAt(new THREE.Vector3(x * 100 - 350, 0, z * 100 - 350));
 	}
 
 	addFloorSection(x, z, xTilt, zTilt, h) {
