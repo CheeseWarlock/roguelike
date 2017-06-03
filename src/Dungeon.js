@@ -117,14 +117,6 @@ class Dungeon {
 		}
 	}
 
-	removeDoor(x, z) {
-		DungeonLayout.doors = DungeonLayout.doors.filter((door) => {
-			return !(door[0] == x && door[1] == z);
-		});
-		this.renderer.removeDoor(x, z);
-		this.reveal(x * 2 - this.playerCharacter.x, z * 2 - this.playerCharacter.z);
-	}
-
 	moveEntity(dx, dz, id) {
 		var target = {
 			x: this.entities.get(id).x + dx,
