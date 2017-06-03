@@ -1,6 +1,10 @@
 var Character = require("./Character");
 
 class Door extends Character {
+	static isDoor() {
+		return true;
+	}
+
 	constructor() {
 		super();
 		this.attack = 0;

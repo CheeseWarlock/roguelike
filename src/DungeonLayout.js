@@ -1,3 +1,4 @@
+var PlayerCharacter = require("./PlayerCharacter");
 var Mandragora = require("./Mandragora");
 var Bat = require("./Bat");
 var Door = require("./Door");
@@ -39,6 +40,7 @@ class Spawn {
 
 class DungeonLayout {
 	constructor() {
+		this.playerSpawn = new Spawn(2, 2, 0, PlayerCharacter);
 		this.rooms = [
 			new Room(0, 0, 3, 8, 0), new Room(6, 3, 14, 14, 0), new Room(0, 10, 4, 13, -50), new Room(-6, -4, -3, 2, 100), new Room(0, -10, 5, -1, 200)
 		];
@@ -46,8 +48,8 @@ class DungeonLayout {
 			new Hall(3, 4, 6, 4, 0, 0), new Hall(4, 12, 6, 12, -50, 0), new Hall(1, 8, 1, 10, 0, -50), new Hall(-3, 1, 0, 1, 100, 0), new Hall(-3, -2, 0, -2, 100, 200) 
 		];
 		this.spawns = [
-			new Spawn(4, 4, 0, new Mandragora()), new Spawn(1, 11, -50, new Bat()), new Spawn(2, 11, -50, new Bat()),
-			new Spawn(3, 4, 0, new Door()), new Spawn(6, 4, 0, new Door()), new Spawn(1, 8, 0, new Door()), new Spawn(1, 10, -50, new Door()), new Spawn(4, 12, -50, new Door()), new Spawn(6, 12, 0, new Door()), new Spawn(0, 1, 0, new Door()), new Spawn(-3, 1, 100, new Door()), new Spawn(-3, -2, 100, new Door()), new Spawn(0, -2, 200, new Door())
+			new Spawn(4, 4, 0, Mandragora), new Spawn(1, 11, -50, Bat), new Spawn(2, 11, -50, Bat),
+			new Spawn(3, 4, 0, Door), new Spawn(6, 4, 0, Door), new Spawn(1, 8, 0, Door), new Spawn(1, 10, -50, Door), new Spawn(4, 12, -50, Door), new Spawn(6, 12, 0, Door), new Spawn(0, 1, 0, Door), new Spawn(-3, 1, 100, Door), new Spawn(-3, -2, 100, Door), new Spawn(0, -2, 200, Door)
 		];
 	}
 
@@ -71,7 +73,7 @@ class DungeonLayout {
 
 	isDoor(x, z) {
 		for (const spawn of this.spawns) {
-			if (spawn.x == x && spawn.z == z) return spawn.entity.isDoor;
+			if (spawn.x == x && spawn.z == z) return spawn.entity.isDoor();
 		}
 		return false;
 	}

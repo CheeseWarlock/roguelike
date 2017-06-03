@@ -1,4 +1,8 @@
 class Character {
+	static isDoor() {
+		return false;
+	}
+
 	constructor() {
 		this.maxHealth = 10;
 		this.currentHealth = this.maxHealth;
