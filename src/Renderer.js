@@ -53,6 +53,7 @@ class Renderer {
 			this.animationFrames -= 1;
 			if (this.animationFrames == 0) this.animations = [];
 		}
+		this.setCameraPosition();
 		this.render();
 	}
 
@@ -79,6 +80,7 @@ class Renderer {
 	}
 
 	addPlayerSupport(x, z, h) {
+		this.angle = 0;
 		this.characterLight = new THREE.PointLight(0xffddaa, 1, 1000, 1);
 		this.characterLight.position.set(x * 100 - 350, 20 + h, z * 100 - 250);
 		this.characterLight.castShadow = true;
@@ -89,8 +91,17 @@ class Renderer {
 		this.scene.add(this.characterLight);
 
 		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-		this.camera.position.set(x * 100 - 350, 800, z * 100 + 50);
-		this.camera.lookAt(new THREE.Vector3(x * 100 - 350, 0, z * 100 - 350));
+		this.setCameraPosition();
+	}
+
+	setCameraPosition() {
+		this.angle += 0.001;
+		this.camera.position.set(
+			this.actors[0].position.x + 300 * Math.sin(this.angle),
+			800,
+			this.actors[0].position.z + 300 * Math.cos(this.angle)
+		);
+		this.camera.lookAt(this.actors[0].position);
 	}
 
 	addFloorSection(x, z, xTilt, zTilt, h) {
