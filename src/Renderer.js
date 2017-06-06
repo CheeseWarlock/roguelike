@@ -1,5 +1,6 @@
 var TextureManager = require("./TextureManager");
 var HealthBar = require("./HealthBar");
+var Controller = require("./Controller");
 
 class Renderer {
 	constructor(options) {
@@ -8,6 +9,19 @@ class Renderer {
 		this.actors = new Map();
 		this.animations = [];
 		this.anim = 0;
+		this.setupRotationKeys();
+	}
+
+	setupRotationKeys() {
+		Controller.registerCallback(65, () => { this.rotationCallback(-1); });
+		Controller.registerCallback(68, () => { this.rotationCallback(1); });
+	}
+
+	rotationCallback(direction) {
+		this.animations.push({
+			isRotation: true,
+			rotate: direction * Math.PI / 2
+		});
 	}
 
 	setupHUD() {
@@ -39,21 +53,25 @@ class Renderer {
 		if (this.animations.length && !this.animationFrames) this.animationFrames = 10;
 		if (this.animationFrames > 0) {
 			this.animations.map((animation) => {
-				this.actors[animation.id].position.x += animation.dx * 10;
-				this.actors[animation.id].position.y += animation.dh / 10;
-				this.actors[animation.id].position.z += animation.dz * 10;
-				if (animation.id == 0) {
-					this.camera.position.x += animation.dx * 10;
-					this.camera.position.z += animation.dz * 10;
-					this.characterLight.position.x += animation.dx * 10;
-					this.characterLight.position.y += animation.dh / 10;
-					this.characterLight.position.z += animation.dz * 10;
+				if (animation.isRotation) {
+					this.angle += animation.rotate / 10;
+					this.setCameraPosition();
+				} else {
+					this.actors[animation.id].position.x += animation.dx * 10;
+					this.actors[animation.id].position.y += animation.dh / 10;
+					this.actors[animation.id].position.z += animation.dz * 10;
+					if (animation.id == 0) {
+						this.camera.position.x += animation.dx * 10;
+						this.camera.position.z += animation.dz * 10;
+						this.characterLight.position.x += animation.dx * 10;
+						this.characterLight.position.y += animation.dh / 10;
+						this.characterLight.position.z += animation.dz * 10;
+					}
 				}
 			});
 			this.animationFrames -= 1;
 			if (this.animationFrames == 0) this.animations = [];
 		}
-		this.setCameraPosition();
 		this.render();
 	}
 
@@ -95,13 +113,22 @@ class Renderer {
 	}
 
 	setCameraPosition() {
-		this.angle += 0.001;
 		this.camera.position.set(
 			this.actors[0].position.x + 300 * Math.sin(this.angle),
 			800,
 			this.actors[0].position.z + 300 * Math.cos(this.angle)
 		);
-		this.camera.lookAt(this.actors[0].position);
+		this.camera.lookAt(
+			new THREE.Vector3(
+			this.actors[0].position.x,
+			0,
+			this.actors[0].position.z
+		));
+		for (let actor of Object.values(this.actors)) {
+			if (actor.children.length > 1) {
+				actor.children[1].rotation.y = this.angle;
+			}
+		}
 	}
 
 	addFloorSection(x, z, xTilt, zTilt, h) {
@@ -153,6 +180,7 @@ class Renderer {
 	makeHealthBar(percent, target) {
 		const healthBar = new HealthBar(percent);
 		healthBar.position.set(target.position.x, target.position.y + 80, target.position.z);
+		healthBar.rotation.y = this.angle;
 		return healthBar;
 	}
 
