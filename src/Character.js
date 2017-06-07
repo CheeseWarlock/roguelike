@@ -17,6 +17,10 @@ class Character {
 	doTurn() {
 
 	}
+
+	drop() {
+		
+	}
 }
 
 module.exports = Character;

@@ -1,4 +1,5 @@
 var Character = require("./Character");
+var Coins = require("./Coins");
 
 class Mandragora extends Character {
 	constructor() {
@@ -17,6 +18,10 @@ class Mandragora extends Character {
 		if (Math.abs(xdiff) + Math.abs(zdiff) == 1) {
 			return ["attack"];
 		}
+	}
+
+	drop() {
+		return Coins;
 	}
 }
 

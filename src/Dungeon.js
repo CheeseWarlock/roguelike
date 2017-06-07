@@ -140,6 +140,10 @@ class Dungeon {
 		this.renderer.log(`${ attacker.name } attacked ${ defender.name } for ${ attacker.attack } damage!`);
 		this.renderer.updateActor(defender);
 		if (defender.currentHealth <= 0) {
+			const drop = defender.drop();
+			if (drop) {
+				this.addEntity(defender.x, defender.z, defender.h, this.idx++, new drop());
+			}
 			this.kill(defender);
 			this.renderer.log(`${ defender.name } was defeated!`);
 		}

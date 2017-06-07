@@ -1,6 +1,7 @@
 var PlayerCharacter = require("./PlayerCharacter");
 var Mandragora = require("./Mandragora");
 var Bat = require("./Bat");
+var Coins = require("./Coins");
 var Door = require("./Door");
 
 const TILE_WALL = 0;
@@ -48,7 +49,7 @@ class DungeonLayout {
 			new Hall(3, 4, 6, 4, 0, 0), new Hall(4, 12, 6, 12, -50, 0), new Hall(1, 8, 1, 10, 0, -50), new Hall(-3, 1, 0, 1, 100, 0), new Hall(-3, -2, 0, -2, 100, 200) 
 		];
 		this.spawns = [
-			new Spawn(4, 4, 0, Mandragora), new Spawn(1, 11, -50, Bat), new Spawn(2, 11, -50, Bat),
+			new Spawn(2, 2, 0, Coins), new Spawn(4, 4, 0, Mandragora), new Spawn(1, 11, -50, Bat), new Spawn(2, 11, -50, Bat),
 			new Spawn(3, 4, 0, Door), new Spawn(6, 4, 0, Door), new Spawn(1, 8, 0, Door), new Spawn(1, 10, -50, Door), new Spawn(4, 12, -50, Door), new Spawn(6, 12, 0, Door), new Spawn(0, 1, 0, Door), new Spawn(-3, 1, 100, Door), new Spawn(-3, -2, 100, Door), new Spawn(0, -2, 200, Door)
 		];
 	}
