@@ -25,7 +25,8 @@ class Renderer {
 			if (this.rotationState > 3) this.rotationState -= 4;
 			this.animations.push({
 				isRotation: true,
-				rotate: direction * Math.PI / 2
+				rotate: direction * Math.PI / 40,
+				duration: 20
 			});
 		}
 	}
@@ -56,27 +57,28 @@ class Renderer {
 
 	nextFrame() {
 		requestAnimationFrame(() => { this.nextFrame(); });
-		if (this.animations.length && !this.animationFrames) this.animationFrames = 10;
-		if (this.animationFrames > 0) {
+		if (this.animations.length > 0) {
 			this.animations.map((animation) => {
 				if (animation.isRotation) {
-					this.angle += animation.rotate / 10;
+					this.angle += animation.rotate;
 					this.setCameraPosition();
 				} else {
-					this.actors[animation.id].position.x += animation.dx * 10;
-					this.actors[animation.id].position.y += animation.dh / 10;
-					this.actors[animation.id].position.z += animation.dz * 10;
+					this.actors[animation.id].position.x += animation.dx;
+					this.actors[animation.id].position.y += animation.dh;
+					this.actors[animation.id].position.z += animation.dz;
 					if (animation.id == 0) {
-						this.camera.position.x += animation.dx * 10;
-						this.camera.position.z += animation.dz * 10;
-						this.characterLight.position.x += animation.dx * 10;
-						this.characterLight.position.y += animation.dh / 10;
-						this.characterLight.position.z += animation.dz * 10;
+						this.camera.position.x += animation.dx;
+						this.camera.position.z += animation.dz;
+						this.characterLight.position.x += animation.dx;
+						this.characterLight.position.y += animation.dh;
+						this.characterLight.position.z += animation.dz;
 					}
 				}
+				animation.duration -= 1;
 			});
-			this.animationFrames -= 1;
-			if (this.animationFrames == 0) this.animations = [];
+			this.animations = this.animations.filter((animation) => {
+				return animation.duration > 0;
+			});
 		}
 		this.render();
 	}
@@ -203,15 +205,16 @@ class Renderer {
 
 	moveCharacter(dx, dz, dh, id) {
 		this.animations.push({
-			dx: dx,
-			dz: dz,
-			dh: dh,
-			id: id
+			dx: dx * 10,
+			dz: dz * 10,
+			dh: dh / 10,
+			id: id,
+			duration: 10
 		});
 	}
 
 	isAnimating() {
-		return this.animationFrames > 0 || this.animations.length > 0;
+		return this.animations.length > 0;
 	}
 
 	render() {
