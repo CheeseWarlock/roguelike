@@ -9,6 +9,7 @@ class Renderer {
 		this.actors = new Map();
 		this.animations = [];
 		this.anim = 0;
+		this.rotationState = 0;
 		this.setupRotationKeys();
 	}
 
@@ -18,6 +19,7 @@ class Renderer {
 	}
 
 	rotationCallback(direction) {
+		this.rotationState -= direction;
 		this.animations.push({
 			isRotation: true,
 			rotate: direction * Math.PI / 2

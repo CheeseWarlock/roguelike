@@ -88,7 +88,10 @@ class Dungeon {
 		return DungeonLayout.atLocation(x, z) == TILE_FLOOR && !this.entityAtPosition(x, z);
 	}
 
-	handlePlayerAction(x, z, id) {
+	handlePlayerAction(dir, id) {
+		let rot = dir + this.renderer.rotationState;
+		let x = (rot % 4 == 0 ? -1 : rot % 4 == 2 ? 1 : 0);
+		let z = (rot % 4 == 1 ? -1 : rot % 4 == 3 ? 1 : 0);
 		var target = {
 			x: this.entities.get(id).x + x,
 			z: this.entities.get(id).z + z
