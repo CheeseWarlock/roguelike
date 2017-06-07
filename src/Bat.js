@@ -1,4 +1,5 @@
 var Character = require("./Character");
+var Coins = require("./Coins");
 
 class Bat extends Character {
 	constructor() {
@@ -40,6 +41,10 @@ class Bat extends Character {
 				return ["move", 1, 0];
 			}
 		}
+	}
+
+	drop() {
+		return Coins;
 	}
 }
 

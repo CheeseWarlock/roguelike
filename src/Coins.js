@@ -7,6 +7,7 @@ class Coins extends Character {
 		this.currentHealth = this.maxHealth;
 		this.attack = 0;
 		this.name = "Coins";
+		this.isCollectible = true;
 	}
 
 	getMesh() {

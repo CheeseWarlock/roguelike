@@ -102,6 +102,11 @@ class Dungeon {
 				if (entity.isDoor) {
 					this.reveal(target.x * 2 - this.playerCharacter.x, target.z * 2 - this.playerCharacter.z);
 					this.kill(entity);
+				} else if (entity.isCollectible) {
+					this.kill(entity);
+					if (this.spaceIsMoveable(target.x, target.z)) {
+						this.moveEntity(x, z, id);
+					}
 				} else {
 					this.doCombat(this.playerCharacter, entity);
 				}
