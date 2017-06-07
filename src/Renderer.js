@@ -19,11 +19,15 @@ class Renderer {
 	}
 
 	rotationCallback(direction) {
-		this.rotationState -= direction;
-		this.animations.push({
-			isRotation: true,
-			rotate: direction * Math.PI / 2
-		});
+		if (!this.isAnimating()) {
+			this.rotationState -= direction;
+			if (this.rotationState < 0) this.rotationState += 4;
+			if (this.rotationState > 3) this.rotationState -= 4;
+			this.animations.push({
+				isRotation: true,
+				rotate: direction * Math.PI / 2
+			});
+		}
 	}
 
 	setupHUD() {
